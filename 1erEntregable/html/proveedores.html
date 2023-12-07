@@ -12,13 +12,14 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
-        <!-- Agrega los enlaces a las bibliotecas de Bootstrap -->
+    <!-- Agrega los enlaces a las bibliotecas de Bootstrap -->
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="estilos.css">
+
+    <link rel="stylesheet" href="/1erEntregable/css/estilos.css">
 
 </head>
 
@@ -41,12 +42,12 @@
         <div class="row border">
             <div class="col-4 display-4">
                 <h3 class="mt-2">
-                    <a href="proveedores.html">Proveedores</a>
+                    <a href="proveedores.html" style="color: blue;">Proveedores</a>
                 </h3>
             </div>
             <div class="col-4 display-4 border">
                 <h3 class="mt-2">
-                    <a href="productos.html" style="color: blue;">Productos</a>
+                    <a href="productos.html">Productos</a>
                 </h3>
             </div>
             <div class="col-4 display-4 border">
@@ -61,50 +62,46 @@
         <div class="row">
             <div class="col-10 border">
                 <h3 class="mt-2 ">
-                    Listado de Productos
+                    Listado de Proveedores
                 </h3>
             </div>
             <div class="col-2 border text-center ">
-                <button class="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target="#altaProductosModal">
-                    Alta Producto
+                <button class="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target="#altaProveedorModal">
+                    Alta Proveedor
                 </button>
             </div>
         </div>
-        <!-- MODAL ALTA Producto -->
-        <div class="modal fade" id="altaProductosModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- MODAL ALTA PROVEEDOR -->
+        <div class="modal fade" id="altaProveedorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Alta de Productos</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Alta de Proveedor</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="formProductosAlta">
+                        <form id="formProveedorAlta">
                             <div class="form-group">
-                                <label for="codProveedorProductos">Cod. Proveedor</label>
-                                <input type="text" class="form-control" id="codProveedorProductos" placeholder="Ingrese Cod. Proveedor">
+                                <label for="rubroProveedor">Rubro</label>
+                                <input type="text" class="form-control" id="rubroProveedor" placeholder="Ingrese Rubro">
                             </div>
                             <div class="form-group">
-                                <label for="skuProductos">SKU</label>
-                                <input type="text" class="form-control" id="skuProductos" placeholder="Ingrese SKU">
+                                <label for="cuitProveedor">CUIT</label>
+                                <input type="text" class="form-control" id="cuitProveedor" placeholder="Ingrese CUIT">
                             </div>
                             <div class="form-group">
-                                <label for="categoriaProductos">Categoria</label>
-                                <input type="text" class="form-control" id="categoriaProductos" placeholder="Ingrese Categoria">
+                                <label for="emailProveedor">Email</label>
+                                <input type="text" class="form-control" id="emailProveedor" placeholder="Ingrese Email">
                             </div>
                             <div class="form-group">
-                                <label for="nombreProductos">Nombre</label>
-                                <input type="text" class="form-control" id="nombreProductos" placeholder="Ingrese Nombre">
+                                <label for="nombreProveedor">Nombre</label>
+                                <input type="text" class="form-control" id="nombreProveedor" placeholder="Ingrese Nombre">
                             </div>
                             <div class="form-group">
-                                <label for="descripcionProductos">Descripcion</label>
-                                <input type="text" class="form-control" id="DescripcionProductos" placeholder="Ingrese Descripcion">
-                            </div>
-                            <div class="form-group">
-                                <label for="precioProductos">Precio</label>
-                                <input type="text" class="form-control" id="precioProductos" placeholder="Ingrese Precio">
+                                <label for="apellidoProveedor">Apellido</label>
+                                <input type="text" class="form-control" id="apellidoProveedor" placeholder="Ingrese Apellido">
                             </div>
                         </form>
                     </div>
@@ -117,40 +114,36 @@
             </div>
         </div>
         <!-- MODAL EDITAR -->
-        <div class="modal fade" id="modificarProductosModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modificarProveedorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modificar Productos</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Modificar Proveedor</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="formProductosMod">
+                        <form id="formProveedorMod">
                             <div class="form-group">
-                                <label for="codProveedorProductosMod">cod. Proveedor</label>
-                                <input type="text" class="form-control" id="codProveedorProductosMod" placeholder="Ingrese Cod. Proveedor">
+                                <label for="rubroProveedor">Rubro</label>
+                                <input type="text" class="form-control" id="rubroProveedorMod" placeholder="Ingrese Rubro">
                             </div>
                             <div class="form-group">
-                                <label for="skuProductosMod">SKU</label>
-                                <input type="text" class="form-control" id="cuitProductosMod" placeholder="Ingrese CUIT">
+                                <label for="cuitProveedor">CUIT</label>
+                                <input type="text" class="form-control" id="cuitProveedorMod" placeholder="Ingrese CUIT">
                             </div>
                             <div class="form-group">
-                                <label for="categoriaMod">Categoria</label>
-                                <input type="text" class="form-control" id="categoriaProductosMod" placeholder="Ingrese Categoria">
+                                <label for="emailProveedor">Email</label>
+                                <input type="text" class="form-control" id="emailProveedorMod" placeholder="Ingrese Email">
                             </div>
                             <div class="form-group">
-                                <label for="nombreProductosMod">Nombre</label>
-                                <input type="text" class="form-control" id="nombreProductosMod" placeholder="Ingrese Nombre">
+                                <label for="nombreProveedor">Nombre</label>
+                                <input type="text" class="form-control" id="nombreProveedorMod" placeholder="Ingrese Nombre">
                             </div>
                             <div class="form-group">
-                                <label for="DescripcionProductosMod">Descripcion</label>
-                                <input type="text" class="form-control" id="DescripcionProductosMod" placeholder="Ingrese Descripcion">
-                            </div>
-                            <div class="form-group">
-                                <label for="precioProductosMod">Precio</label>
-                                <input type="text" class="form-control" id="precioProductosMod" placeholder="Ingrese Precio">
+                                <label for="apellidoProveedor">Apellido</label>
+                                <input type="text" class="form-control" id="apellidoProveedorMod" placeholder="Ingrese Apellido">
                             </div>
                         </form>
                     </div>
@@ -168,18 +161,16 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Cod. Producto</th>
-                            <th>Cod. Proveedor</th>
-                            <th>SKU</th>
-                            <th>Categoria</th>
+                            <th>Cod.</th>
+                            <th>Rubro</th>
+                            <th>CUIT</th>
+                            <th>Email</th>
                             <th>Nombre</th>
-                            <th>Desc.</th>
-                            <th>Precio</th>
+                            <th>Apellido</th>
                             <th>Accion</th>
-
                         </tr>
                     </thead>
-                    <tbody id="tablaProductosBody">
+                    <tbody id="tablaProveedoresBody">
                     </tbody>
                 </table>
             </div>
@@ -188,7 +179,7 @@
 
     </div>
 
-    <!-- <script src="scriptProductoses.js"></script> -->
+    <script src="/1erEntregable/javascript/scriptProveedores.js"></script>
 </body>
 
 </html>
