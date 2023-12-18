@@ -1,0 +1,35 @@
+<!-- Div de Listado Producto -->
+<div class="row">
+    <div class="col-12 border">
+        <h3 class="mt-2 ">
+            Alta Proveedor
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 border text-center p-3 ">
+        <label class="p-2 ">Codigo</label>
+        <input type="text" [(ngModel)]="inputId">
+        <br>
+        <label class="p-2 ">Rubro</label>
+        <input type="text" [(ngModel)]="inputRubro">
+        <br>
+        <label class="p-2 ">Cuit</label>
+        <input type="text" [(ngModel)]="inputCuit">
+        <br>
+        <label class="p-2 ">Email</label>
+        <input type="text" [(ngModel)]="inputEmail">
+        <br>
+        <label class="p-2 ">Nombre</label>
+        <input type="text" [(ngModel)]="inputNombre">
+        <br>
+        <label class="p-2 ">Apellido</label>
+        <input type="text" [(ngModel)]="inputApellido">
+        <br>
+        <button class="btn btn-success m-3" (click)="crearProveedor()">Crear Proveedor</button>
+        <br>
+        <button class="btn bg-primary" routerLink="../proveedores-lista"> Atras</button>
+        <br>
+    </div>
+</div>
