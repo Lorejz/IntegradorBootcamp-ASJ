@@ -1,0 +1,55 @@
+<div class="row m-2 text-center ">
+    <h2>Alta Proveedor</h2>
+</div>
+
+
+<div class="container">
+    <form #miForm="ngForm" (ngSubmit)="crearProveedor(miForm)">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" [(ngModel)]="nombre">
+                <br>
+                <label  class="form-label">Rubro</label>
+                <select class="form-select" aria-label="Rubro" name="rubro" [(ngModel)]="rubro">
+                    <option value="Textil">Textil</option>
+                    <option value="Electronico">Electronico</option>
+                    <option value="Muebles">Muebles</option>
+                    <option value="Software">Software</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <br>
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" [(ngModel)]="email">
+            </div>
+            <div class="col-4">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" name="apellido" [(ngModel)]="apellido">
+                <br>
+                <label class="form-label">CUIT</label>
+                <input type="text" class="form-control" name="cuit" [(ngModel)]="cuit">
+
+            </div>
+        </div>
+
+        <div class="row text-center m-3">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success">Crear Proveedor</button>
+                <button type="button" class="btn btn-primary m-1 ">Volver</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+<!-- <div class="col ">
+    "Textil" |
+    "Electronico" |
+    "Muebles" |
+    "Software" |
+    "Otro";
+    </select>
+</div> -->
