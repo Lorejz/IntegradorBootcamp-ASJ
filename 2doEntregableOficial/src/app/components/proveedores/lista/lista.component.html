@@ -1,0 +1,55 @@
+<!-- Div de Listado proveedores -->
+<div class="row">
+    <div class="col-10 border">
+        <h3 class="mt-2">
+            Listado de Proveedores
+        </h3>
+    </div>
+    <div class="col-2 border text-center">
+        <button class="btn btn-success btn-sm m-1" routerLink="./alta-proveedor">
+            Alta Proveedor
+        </button>
+    </div>
+</div>
+
+<!-- Div de la tabla con proveedores -->
+<div class="row border">
+    <div class="col-12 p-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>Cod.</th>
+                    <th>Razon Social</th>
+                    <th>Sitio Web / Email / Telefono</th>
+                    <th>Nombre Contacto</th>
+                    <th>Apellido Contacto</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of proveedores">
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.razonSocial }}</td>
+                    <td>
+                      {{ p.sitioWeb }}
+                      <br>
+                      {{ p.email }}
+                      <br>
+                      {{ p.telefono }}
+                    </td>
+                    <td>
+                      {{ p.contacto.nombre }}
+                    </td>
+                    <td>
+                      {{ p.contacto.apellido }}
+                    </td>
+                    <td class="text-center ">
+                        <Button class="btn btn-warning m-1" (click)="modificarProveedor(p.id)">Editar</Button>
+                        <button class="btn btn-danger" (click)="eliminarProveedor(p.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

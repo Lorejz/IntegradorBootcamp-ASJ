@@ -6,15 +6,23 @@ import { proveedores } from '../../data/proveedores';
 })
 export class ServicioProveedoresService {
 
-  proveedoresData: any[] = []
+  proveedoresData: any[] = proveedores;
 
-  constructor() {
-    this.proveedoresData = structuredClone(proveedores)
-  }
+  constructor() {  }
 
   public getProveedores() {
-    return this.proveedoresData;
+    return proveedores;
   }
+
+  public getJuan(){
+    return localStorage.getItem('juan');
+  }
+
+/*   //GET Usuarios
+  public getUsers(): Observable<any> {
+    console.log('HTTP GET');
+    return this.http.get(this.URL_API);
+  } */
 
   public getProveedorById(id: string) {
     return this.proveedoresData.filter(p => p.codigo == id)[0]
@@ -30,4 +38,6 @@ export class ServicioProveedoresService {
   public deleteProveedor(id: string) {
     this.proveedoresData = this.proveedoresData.filter(p => p.codigo !== id)
   }
+
+
 }

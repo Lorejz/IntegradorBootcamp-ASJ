@@ -1,0 +1,132 @@
+<div *ngIf="estadoFormAlta" class="row m-2 text-center mt-2 ">
+    <h1>Alta Proveedor</h1>
+</div>
+
+<div *ngIf="estadoFormModificar" class="row m-2 text-center mt-2 ">
+    <h1>Modificar Proveedor</h1>
+</div>
+
+<div class="container">
+    <form #miForm="ngForm" (ngSubmit)="crearProveedor(miForm)">
+        <div class="row justify-content-center   ">
+            <div class="col-8 ">
+                <button type="button" class="btn btn-primary m-1 " routerLink="/proveedores"><i class="bi bi-arrow-bar-left"></i>Volver</button>
+                <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+                <div *ngIf="alertaSucces" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Excelente!</strong> La informacion se ha cargado correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <hr>
+                <h4>Informacion del Proveedor</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label class="form-label">Razon Social</label>
+                <input type="text" class="form-control" name="razonSocialProv" [(ngModel)]="razonSocialProveedor" required>
+                <br>
+                <label class="form-label">Rubro</label>
+                <select class="form-select" aria-label="Rubro" name="rubroProv" [(ngModel)]="rubroProveedor" required>
+                    <option value="Textil">Textil</option>
+                    <option value="Electronico">Electronico</option>
+                    <option value="Muebles">Muebles</option>
+                    <option value="Software">Software</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <br>
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" name="emailProv" [(ngModel)]="emailProveedor" required>
+                <br>
+                <label class="form-label">Telefono</label>
+                <input type="text" class="form-control" name="telefonoProv" [(ngModel)]="telefonoProveedor" required>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Sitio Web</label>
+                <input type="text" class="form-control" name="sitioWebProv" [(ngModel)]="sitioWebProveedor" required>
+                <br>
+                <label for="suplier-iva" class="form-label">Condición frente al IVA</label>
+                <select class="form-select" name="ivaProv" aria-label="Condición IVA" [(ngModel)]="condIvaProveedor" required>
+                    <option value="IVA Responsable Inscripto">IVA Responsable Inscripto</option>
+                    <option value="IVA Sujeto Exento">IVA Sujeto Exento</option>
+                    <option value="Responsable Monotributo">Responsable Monotributo</option>
+                    <option value="Proveedor del Exterior">Proveedor del Exterior</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <br>
+                <label class="form-label">CUIT</label>
+                <input type="text" class="form-control" name="cuitProv" [(ngModel)]="cuitProveedor" required>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4 ">
+            <div class="col-8 ">
+                <hr>
+                <h4>Direcccion del Proveedor</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center ">
+            <div class="col-4">
+                <label class="form-label">Calle</label>
+                <input type="text" class="form-control" name="calleDirec" [(ngModel)]="calleDireccion" required>
+                <br>
+                <label class="form-label">Cod. Postal</label>
+                <input type="text" class="form-control" name="codPostalDirec" [(ngModel)]="codPostalDireccion" required>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Numero</label>
+                <input type="text" class="form-control" name="numeroDirec" [(ngModel)]="numeroDireccion" required>
+                <br>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4 ">
+            <div class="col-8 ">
+                <hr>
+                <h4>Informacion de Contacto</h4>
+            </div>
+            
+        </div>
+        <div class="row justify-content-center ">
+            <div class="col-4">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombreContac" [(ngModel)]="nombreContacto" required>
+                <br>
+                <label class="form-label">Telefono</label>
+                <input type="text" class="form-control" name="telefonoContac" [(ngModel)]="telefonoContacto" required>
+                <br>
+                <label class="form-label">Rol</label>
+                <input type="text" class="form-control" name="rolContac" [(ngModel)]="rolContacto">
+            </div>
+            <div class="col-4">
+                <label class="form-label">Apellido</label>
+                <input type="text" class="form-control" name="apellidoContac" [(ngModel)]="apellidoContacto" required>
+                <br>
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" name="emailContac" [(ngModel)]="emailContacto">
+            </div>
+        </div>
+        
+        <div class="row text-center m-3">
+            <div *ngIf="estadoFormAlta" class="col-11 ">
+                <button type="submit" class="btn btn-success ">Crear Proveedor</button>
+            </div>
+            <div *ngIf="estadoFormModificar" class="col-11 ">
+                <button type="submit" class="btn btn-warning  ">Modificar Proveedor</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+<!-- <div class="col ">
+    "Textil" |
+    "Electronico" |
+    "Muebles" |
+    "Software" |
+    "Otro";
+    </select>
+</div> -->
