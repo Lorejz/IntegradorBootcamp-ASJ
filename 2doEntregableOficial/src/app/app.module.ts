@@ -11,6 +11,8 @@ import { HomeComponent } from './components/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { ProdFormAltaComponent } from './components/productos/prod-form-alta/prod-form-alta.component';
 import { ProdListaComponent } from './components/productos/prod-lista/prod-lista.component';
+import { OrdenFormAltaComponent } from './components/ordenes-de-compra/orden-form-alta/orden-form-alta.component';
+import { OrdenListaComponent } from './components/ordenes-de-compra/orden-lista/orden-lista.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ProdListaComponent } from './components/productos/prod-lista/prod-lista
     NavbarComponent,
     HomeComponent,
     ProdFormAltaComponent,
-    ProdListaComponent
+    ProdListaComponent,
+    OrdenFormAltaComponent,
+    OrdenListaComponent
   ],
   imports: [
     BrowserModule,

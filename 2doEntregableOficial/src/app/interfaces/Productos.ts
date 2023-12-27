@@ -1,5 +1,6 @@
 export interface Productos {
     idProveedor: string;
+    razonSocialProveedor: string,
     codSKUProducto: string;
     categoria: categoria;
     nombre: string;

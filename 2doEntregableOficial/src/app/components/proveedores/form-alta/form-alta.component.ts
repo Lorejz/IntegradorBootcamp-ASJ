@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Proveedores } from '../../../interfaces/Proveedores';
 import { ProveedoresService } from '../../../services/proveedores.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-alta',
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FormAltaComponent implements OnInit {
 
-  constructor(public proveedorServicio: ProveedoresService, public route: ActivatedRoute) { }
+  constructor(public proveedorServicio: ProveedoresService, public route: ActivatedRoute, public router: Router) { }
 
   id: any = '';
 
@@ -152,12 +152,15 @@ export class FormAltaComponent implements OnInit {
             rol: miForm.value.rolContac
           }
         }
-        this.proveedorServicio.updateProveedor(proveedorMod)
-        miForm.reset();
-        this.alertaSucces = true;
-        this.alertaWarning = false;
+        let confirmacion = confirm("¿Desea modificar los datos del Proveedor?");
+        if (confirmacion){
+          this.proveedorServicio.updateProveedor(proveedorMod)
+          miForm.reset();
+          this.alertaSucces = true;
+          this.alertaWarning = false;
+          this.router.navigate(['/proveedores']);
+        }
       }
     }
   }
-
 }

@@ -1,4 +1,4 @@
-<!-- Div de Listado proveedores -->
+<!-- Div de Listado productos -->
 <div class="row">
     <div class="col-10 border">
         <h3 class="mt-2">
@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<!-- Div de la tabla con proveedores -->
+<!-- Div de la tabla con productos -->
 <div class="row border">
     <div class="col-12 p-3">
         <table>
@@ -27,10 +27,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr >
+                <tr *ngFor="let p of productos">
+                    <td><img src="{{ p.imagen }}" alt="" height="200px" width="200px"></td>
+                    <td>{{ p.nombre }}</td>
+                    <td>{{ p.categoria }}</td>
+                    <td>{{ p.razonSocialProveedor }}</td>
+                    <td>{{ p.precio }}</td>
                     <td class="text-center ">
-                        <Button class="btn btn-warning m-1">Editar</Button>
-                        <button class="btn btn-danger">Eliminar</button>
+                        <Button class="btn btn-warning m-1" (click)="modificarProducto(p.codSKUProducto)">Editar</Button>
+                        <button class="btn btn-danger" (click)="eliminarProducto(p.codSKUProducto)">Eliminar</button>
                     </td>
                 </tr>
             </tbody>

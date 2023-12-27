@@ -5,6 +5,8 @@ import { FormAltaComponent } from './components/proveedores/form-alta/form-alta.
 import { HomeComponent } from './components/home/home.component';
 import { ProdListaComponent } from './components/productos/prod-lista/prod-lista.component';
 import { ProdFormAltaComponent } from './components/productos/prod-form-alta/prod-form-alta.component';
+import { OrdenListaComponent } from './components/ordenes-de-compra/orden-lista/orden-lista.component';
+import { OrdenFormAltaComponent } from './components/ordenes-de-compra/orden-form-alta/orden-form-alta.component';
 
 const routes: Routes = [
   { path: 'home',
@@ -22,11 +24,18 @@ const routes: Routes = [
     ]
     },
   { path: 'productos',
-    children:[
+    children: [
       { path: '', component: ProdListaComponent },
       { path: 'alta-producto', component: ProdFormAltaComponent },
+      { path: 'modificar-producto/:codSKU', component: ProdFormAltaComponent }
     ]
-  }  
+  },
+  { path: 'ordenes-de-compra', 
+    children: [
+      { path: '', component: OrdenListaComponent },
+      { path: 'crear-orden-de-compra', component: OrdenFormAltaComponent }
+    ]
+  }
 
 ];
 

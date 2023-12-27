@@ -1,4 +1,4 @@
-import { Producto } from "./Productos";
+import { Productos } from "./Productos";
 
 export interface OrdenCompra {
     numOrdenCompra: number;
@@ -6,38 +6,21 @@ export interface OrdenCompra {
     fechaEntregaEsperada: Date;
     direccion: Direccion;
     idProveedor: number;
-    productos: Producto[];
+    razonSocial: string;
+    montoTotal: number;
+    productos: ProductosCantidad[];
     
   }
 
   interface Direccion {
     calle: string,
     numero: number,
-    codPostal: number,
-    provincia: Provincia,
+    codPostal: number
   }
 
-  export type Provincia =
-    "Buenos Aires" |
-    "Catamarca" |
-    "Chaco" |
-    "Chubut" |
-    "Córdoba" |
-    "Corrientes" |
-    "Entre Ríos" |
-    "Formosa" |
-    "Jujuy" |
-    "La Pampa" |
-    "La Rioja" |
-    "Mendoza" |
-    "Misiones" |
-    "Neuquén" |
-    "Río Negro" |
-    "Salta" |
-    "San Juan" |
-    "San Luis" |
-    "Santa Cruz" |
-    "Santa Fe" |
-    "Santiago del Estero" |
-    "Tierra del Fuego" |
-    "Tucumán";
+  interface ProductosCantidad {
+      codSKU: string,
+      nombreProducto: string,
+      cantidad: number,
+      montoDetalle: number,
+    }

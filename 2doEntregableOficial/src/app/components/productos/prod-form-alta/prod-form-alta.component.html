@@ -1,13 +1,25 @@
-<div class="row m-2 text-center mt-2 ">
+<div *ngIf="estadoFormAlta" class="row m-2 text-center mt-2 ">
     <h1>Alta Producto</h1>
+</div>
+
+<div *ngIf="estadoFormModificar" class="row m-2 text-center mt-2 ">
+    <h1>Modificar Producto</h1>
 </div>
 
 <div class="container">
     <form #miForm="ngForm" (ngSubmit)="crearProducto(miForm)">
         <div class="row justify-content-center   ">
             <div class="col-8 ">
-                <button type="button" class="btn btn-primary m-1 " routerLink="/productos"><i
-                        class="bi bi-arrow-bar-left"></i>Volver</button>
+                <button type="button" class="btn btn-primary m-1 " routerLink="/productos"><i class="bi bi-arrow-bar-left"></i>Volver</button>
+                <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+                <div *ngIf="alertaSucces" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Excelente!</strong> La informacion se ha cargado correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <hr>
                 <h4>Informacion del Producto</h4>
             </div>
@@ -48,8 +60,11 @@
                 <input type="text" class="form-control" name="imagenProd" [(ngModel)]="imagenProducto" required>
             </div>
             <div class="row text-center m-3">
-                <div class="col-11 ">
-                    <button type="submit" class="btn btn-success ">Crear Producto</button>
+                <div *ngIf="estadoFormAlta" class="col-11 ">
+                    <button type="submit" class="btn btn-success">Crear Producto</button>
+                </div>
+                <div *ngIf="estadoFormModificar" class="col-11 ">
+                    <button type="submit" class="btn btn-warning">Modificar Producto</button>
                 </div>
             </div>
         </div>

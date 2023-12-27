@@ -1,0 +1,55 @@
+<div class="row m-2 text-center mt-2 ">
+    <h1>Crear Orden de Compra</h1>
+</div>
+
+<div class="container">
+    <form #miForm="ngForm" (ngSubmit)="crearOrden(miForm)">
+        <div class="row justify-content-center">
+            <div class="col-8 ">
+                <button type="button" class="btn btn-primary m-1 " routerLink="/ordenes-de-compra"><i class="bi bi-arrow-bar-left"></i>Volver</button>
+                <hr>
+                <h4>Informacion de la Orden de Compra</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label class="form-label">Cod. Orden</label>
+                <input type="text" class="form-control" name="codigoOrd" [(ngModel)]="codigoOrden" required readonly>
+                <br>
+                <label class="form-label">Proveedor</label>
+                <select class="form-select" name="codProvOrd" aria-label="razonSocial" [(ngModel)]="codProvOrden" (change)="buscarProductosProveedor()" required>
+                    <option *ngFor="let p of proveedores" [value]="p.id">{{ p.razonSocial }}</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <label class="form-label">Fecha de Emision</label>
+                <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="fechaEmisionOrden" required>
+                <br>
+                <label class="form-label">Fecha de Entrega Esperada</label>
+                <input type="date" class="form-control" name="fechaEntregaEspOrd" [(ngModel)]="fechaEntregaEspOrden" required>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8 ">
+                <hr>
+                <h4>Productos de la Orden de Compra</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <label class="form-label">Productos del Proveedor Seleccionado</label>
+                <select class="form-select" name="codProductoOrd" aria-label="razonSocial" [(ngModel)]="codProductoOrden" required>
+                    <option *ngFor="let pp of productosProveedor" [value]="pp.codSKUProducto">{{ pp.nombre }}</option>
+                </select>
+            </div>
+            <div class="col-5">
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!--                 <div class="col-11 ">
+                    <button type="submit" class="btn btn-success">Crear Orden de Compra</button>
+                </div> -->
