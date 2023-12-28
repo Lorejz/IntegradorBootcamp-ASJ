@@ -28,7 +28,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr *ngFor="let o of ordenesArray">
+                    <td>{{ o.numOrdenCompra }}</td>
+                    <td>{{ o.razonSocialProveedor }}</td>
+                    <td>{{ o.fechaEmision }}</td>
+                    <td>{{ o.fechaEntregaEsperada }}</td>
+                    <td></td>
+                    <td>{{ o.montoTotal }}</td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>

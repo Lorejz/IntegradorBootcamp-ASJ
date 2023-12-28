@@ -1,15 +1,16 @@
 import { Productos } from "./Productos";
 
 export interface OrdenCompra {
-    numOrdenCompra: number;
+    numOrdenCompra: string;
     fechaEmision: Date;
     fechaEntregaEsperada: Date;
     direccion: Direccion;
     idProveedor: number;
-    razonSocial: string;
+    razonSocialProveedor: string;
     montoTotal: number;
     productos: ProductosCantidad[];
-    
+    descripcionOrden: string;
+    cancelada?: boolean;
   }
 
   interface Direccion {
@@ -18,9 +19,9 @@ export interface OrdenCompra {
     codPostal: number
   }
 
-  interface ProductosCantidad {
+  export interface ProductosCantidad {
       codSKU: string,
       nombreProducto: string,
-      cantidad: number,
+      cantidad: number | string,
       montoDetalle: number,
     }
