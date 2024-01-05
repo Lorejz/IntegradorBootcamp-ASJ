@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdenesDeCompraService } from '../../../services/ordenes-de-compra.service';
 import { OrdenCompra } from '../../../interfaces/OrdenCompra';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orden-lista',
@@ -9,7 +10,7 @@ import { OrdenCompra } from '../../../interfaces/OrdenCompra';
 })
 export class OrdenListaComponent implements OnInit{
 
-  constructor ( public ordenesServicio : OrdenesDeCompraService ) {}
+  constructor ( public ordenesServicio : OrdenesDeCompraService, public router : Router ) {}
 
   ordenesArray : OrdenCompra[] = [];
 
@@ -17,4 +18,8 @@ export class OrdenListaComponent implements OnInit{
     this.ordenesArray = this.ordenesServicio.getOrdenes();
   }
 
+
+  public modificarOrden(numOrdenCompra: string) {
+    this.router.navigate(['/ordenes-de-compra/modificar-orden-de-compra/',numOrdenCompra])
+  }
 }

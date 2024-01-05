@@ -5,7 +5,7 @@ export interface Productos {
     categoria: categoria;
     nombre: string;
     descripcion: string;
-    precio: string;
+    precio: number | null;
     imagen: string;
   }
 
@@ -14,4 +14,5 @@ export interface Productos {
   "Electronico" |
   "Muebles" |
   "Software" |
+  "" |
   "Otro";

@@ -2,26 +2,31 @@ import { Productos } from "./Productos";
 
 export interface OrdenCompra {
     numOrdenCompra: string;
-    fechaEmision: Date;
-    fechaEntregaEsperada: Date;
+    fechaEmision: Date | null;
+    fechaEntregaEsperada: Date | null;
     direccion: Direccion;
-    idProveedor: number;
+    idProveedor: string;
     razonSocialProveedor: string;
-    montoTotal: number;
+    montoTotal: number | null;
     productos: ProductosCantidad[];
     descripcionOrden: string;
-    cancelada?: boolean;
+    estado?: estado;
   }
 
   interface Direccion {
     calle: string,
-    numero: number,
-    codPostal: number
+    numero: string,
+    codPostal: number | null
   }
 
   export interface ProductosCantidad {
       codSKU: string,
       nombreProducto: string,
-      cantidad: number | string,
-      montoDetalle: number,
+      cantidad: number | null,
+      montoDetalle: number | null,
     }
+
+    export type estado =
+    "Pendiente" |
+    "Cancelada" |
+    "Pagada";

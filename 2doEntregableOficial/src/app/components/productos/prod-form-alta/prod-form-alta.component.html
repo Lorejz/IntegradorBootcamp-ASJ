@@ -40,7 +40,7 @@
                 </select>
                 <br>
                 <label class="form-label">Nombre del Producto</label>
-                <input type="text" class="form-control" name="nombreProd" [(ngModel)]="nombreProducto" required>
+                <input type="text" class="form-control" name="nombreProd" [(ngModel)]="nombreProducto" required pattern=".{5,}" title="Ingrese al menos 5 caracteres">
                 <br>
                 <label class="form-label">Descripcion</label>
                 <br>

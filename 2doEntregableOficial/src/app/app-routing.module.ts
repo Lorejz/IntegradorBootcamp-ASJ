@@ -33,7 +33,8 @@ const routes: Routes = [
   { path: 'ordenes-de-compra', 
     children: [
       { path: '', component: OrdenListaComponent },
-      { path: 'crear-orden-de-compra', component: OrdenFormAltaComponent }
+      { path: 'crear-orden-de-compra', component: OrdenFormAltaComponent },
+      { path: 'modificar-orden-de-compra/:numOrdenCompra', component: OrdenFormAltaComponent }
     ]
   }
 

@@ -28,14 +28,14 @@
             </thead>
             <tbody>
                 <tr *ngFor="let p of productos">
-                    <td><img src="{{ p.imagen }}" alt="" height="200px" width="200px"></td>
+                    <td><img src="{{ p.imagen }}" alt="" height="100px" width="100px"></td>
                     <td>{{ p.nombre }}</td>
                     <td>{{ p.categoria }}</td>
                     <td>{{ p.razonSocialProveedor }}</td>
-                    <td>{{ p.precio }}</td>
+                    <td>ARS {{ p.precio }}</td>
                     <td class="text-center ">
-                        <Button class="btn btn-warning m-1" (click)="modificarProducto(p.codSKUProducto)">Editar</Button>
-                        <button class="btn btn-danger" (click)="eliminarProducto(p.codSKUProducto)">Eliminar</button>
+                        <Button class="btn btn-warning m-1" (click)="modificarProducto(p.codSKUProducto)"><i class="bi bi-pencil"></i></Button>
+                        <button class="btn btn-danger" (click)="eliminarProducto(p.codSKUProducto)"><i class="bi bi-trash3"></i></button>
                     </td>
                 </tr>
             </tbody>

@@ -22,17 +22,29 @@ export class ProdFormAltaComponent implements OnInit {
   estadoFormAlta: boolean = true;
   estadoFormModificar: boolean = false;
 
+  //HACER EN ngModels poniendo ' productoMod.razonSocialProveedor ' --> para hacer referencia al ngModel en el html
+  productoNG : Productos = {
+    idProveedor: '',
+    razonSocialProveedor: '',        
+    codSKUProducto: '',
+    categoria: '',
+    nombre: '',
+    descripcion: '',
+    precio: null,
+    imagen: '',
+  }
+
   codSKUproducto = '';
   categoriaProducto = '';
   nombreProducto = '';
   descProducto = '';
-  precioProducto = '';
+  precioProducto: number | null = null;
   razonProvProducto = ''; //id Proveedor
   imagenProducto = '';
 
   proveedores: Proveedores[] = [];
 
-  codSKU: any = '';
+  codSKU: any = ''; //utilizado en el routing, para modificar
 
 
   ngOnInit(): void {

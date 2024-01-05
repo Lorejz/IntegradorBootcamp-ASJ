@@ -25,6 +25,7 @@
                     <th>Fecha Entrega Real</th>
                     <th>Monto Total</th>
                     <th>Estado</th>
+                    <th>Accion</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,8 +35,12 @@
                     <td>{{ o.fechaEmision }}</td>
                     <td>{{ o.fechaEntregaEsperada }}</td>
                     <td></td>
-                    <td>{{ o.montoTotal }}</td>
-                    <td></td>
+                    <td>ARS {{ o.montoTotal }}</td>
+                    <td>{{o.estado}}</td>
+                    <td class="text-center ">
+                        <Button class="btn btn-warning m-1" (click)="modificarOrden(o.numOrdenCompra)"><i class="bi bi-pencil"></i></Button>
+                        <button class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
+                    </td>
                 </tr>
             </tbody>
         </table>

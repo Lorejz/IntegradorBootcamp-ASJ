@@ -8,63 +8,46 @@
             <div class="col-8 ">
                 <button type="button" class="btn btn-primary m-1 " routerLink="/ordenes-de-compra"><i
                         class="bi bi-arrow-bar-left"></i>Volver</button>
-                        <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        
-                        <div *ngIf="alertaSucces" class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Excelente!</strong> La informacion se ha cargado correctamente.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+                <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div *ngIf="alertaWarningDetalle" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Advertencia !</strong> Deberias agregar al menos un producto a la orden de compra!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div *ngIf="alertaSucces" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Excelente!</strong> La informacion se ha cargado correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <hr>
                 <h4>Informacion de la Orden de Compra</h4>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-4">
-                <label class="form-label">Cod. Orden</label>
+                <!--                 <label class="form-label">Cod. Orden</label>
                 <input type="text" class="form-control" name="codigoOrd" [(ngModel)]="codigoOrden" readonly required>
-                <br>
+                <br> -->
                 <label class="form-label">Proveedor</label>
-                <select class="form-select" name="codProvOrd" aria-label="razonSocial" [(ngModel)]="codProvOrden"
-                    (change)="buscarProductosProveedor()" required>
+                <select class="form-select" name="codProvOrd" aria-label="razonSocial" [(ngModel)]="ordenNG.idProveedor"
+                    (change)="buscarProductosProveedor()" [attr.disabled]="!campoModificable" required>
                     <option *ngFor="let p of proveedores" [value]="p.id">{{ p.razonSocial }}</option>
                 </select>
-            </div>
-            <div class="col-4">
-                <label class="form-label">Fecha de Emision</label>
-                <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="fechaEmisionOrden" required>
-                <br>
-                <label class="form-label">Fecha de Entrega Esperada</label>
-                <input type="date" class="form-control" name="fechaEntregaEspOrd" [(ngModel)]="fechaEntregaEspOrden"
-                    required>
-            </div>
-            <div class="col-8 text-center  ">
                 <br>
                 <label class="form-label">Información de Recepción</label>
                 <br>
-                <textarea name="descripcionOrd" cols="78" rows="3" [(ngModel)]="descripcionOrden" ></textarea>
-            </div>
-        </div>
-        <div class="row justify-content-center mt-4 ">
-            <div class="col-8 ">
-                <hr>
-                <h4>Direcccion Entrega</h4>
-            </div>
-        </div>
-        <div class="row justify-content-center ">
-            <div class="col-4">
-                <label class="form-label">Calle</label>
-                <input type="text" class="form-control" name="calleDirec" [(ngModel)]="calleDireccion" required>
-                <br>
-                <label class="form-label">Cod. Postal</label>
-                <input type="text" class="form-control" name="codPostalDirec" [(ngModel)]="codPostalDireccion" required>
+                <textarea class="form-control" name="descripcionOrd" cols="52" rows="3" [(ngModel)]="ordenNG.descripcionOrden"></textarea>
             </div>
             <div class="col-4">
-                <label class="form-label">Numero</label>
-                <input type="text" class="form-control" name="numeroDirec" [(ngModel)]="numeroDireccion" required>
+                <label class="form-label">Fecha de Emision</label>
+                <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="ordenNG.fechaEmision" required>
                 <br>
+                <label class="form-label">Fecha de Entrega Esperada</label>
+                <input type="date" class="form-control" name="fechaEntregaEspOrd" [(ngModel)]="ordenNG.fechaEntregaEsperada"
+                    required>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -74,40 +57,71 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-3">
+            <div class="col-4">
                 <label class="form-label">Productos del Proveedor</label>
                 <select class="form-select" name="codProductoOrd" aria-label="razonSocial"
                     [(ngModel)]="codProductoOrden" required>
                     <option *ngFor="let pp of productosProveedor" [value]="pp.codSKUProducto">{{ pp.nombre }}</option>
                 </select>
                 <br>
+            </div>
+            <div class="col-4">
                 <label class="form-label">Cantidad</label>
                 <input type="text" class="form-control" name="cantProductoOrd" [(ngModel)]="cantProducto" required>
                 <br>
-                <button type="button" class="btn btn-primary " (click)="crearOrdenDetalle()" >Agregar</button>
+                <button type="button" class="btn btn-dark " (click)="crearOrdenDetalle()">Agregar</button>
             </div>
-            <div class="col-5">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>SKU Producto</th>
-                            <th>Nombre Producto</th>
-                            <th>Cantidad</th>
-                            <th>Monto Detalle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let od of ordenDetalle">
-                            <td>{{ od.codSKU }}</td>
-                            <td>{{ od.nombreProducto }}</td>
-                            <td>{{ od.cantidad }}</td>
-                            <td>{{ od.montoDetalle }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
+            <div class="row justify-content-center ">
+                <div class="col-8">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SKU Producto</th>
+                                <th>Nombre Producto</th>
+                                <th>Cantidad</th>
+                                <th>Monto Detalle</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let od of ordenDetalle">
+                                <td>{{ od.codSKU }}</td>
+                                <td>{{ od.nombreProducto }}</td>
+                                <td>{{ od.cantidad }}</td>
+                                <td>ARS {{ od.montoDetalle }}</td>
+                                <td class="text-center "><button class="btn btn-danger" (click)="eliminarDetalle(od.codSKU)"><i class="bi bi-x-circle"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td><strong>Subtotal:</strong> ARS {{ calcularSubtotal() }}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="col-11 text-center  ">
+            <div class="row justify-content-center">
+                <div class="col-8 ">
+                    <hr>
+                    <h4>Direcccion Entrega de la Orden de Compra</h4>
+                </div>
+            </div>
+            <div class="row justify-content-center ">
+                <div class="col-4">
+                    <label class="form-label">Calle</label>
+                    <input type="text" class="form-control" name="calleDirec" [(ngModel)]="ordenNG.direccion.calle" required>
+                    <br>
+                    <label class="form-label">Cod. Postal</label>
+                    <input type="text" class="form-control" name="codPostalDirec" [(ngModel)]="ordenNG.direccion.codPostal"
+                        required>
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Numero</label>
+                    <input type="text" class="form-control" name="numeroDirec" [(ngModel)]="ordenNG.direccion.numero" required>
+                    <br>
+                </div>
+            </div>
+            <div class="col-11 text-center mt-3  ">
                 <button type="submit" class="btn btn-success">Crear Orden de Compra</button>
             </div>
         </div>
