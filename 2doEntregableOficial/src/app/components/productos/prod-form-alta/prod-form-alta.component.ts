@@ -96,6 +96,7 @@ export class ProdFormAltaComponent implements OnInit {
         miForm.reset();
         this.alertaSucces = true;
         this.alertaWarning = false;
+        //this.router.navigate(['/productos']); DAR ALGUN FEEDBACK DE Q SE CREEO
       }
     }
     if(this.estadoFormModificar == true && this.estadoFormAlta == false ){ // ESTADO MODIFICACION

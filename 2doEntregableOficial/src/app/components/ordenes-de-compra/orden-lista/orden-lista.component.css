@@ -13,3 +13,8 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
+.cancelada-row {
+    text-decoration: line-through;
+    background-color: #f2f2f2;
+  }

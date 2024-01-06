@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let o of ordenesArray">
+                <tr *ngFor="let o of ordenesArray" [class.cancelada-row]="o.estado === 'Cancelada'">
                     <td>{{ o.numOrdenCompra }}</td>
                     <td>{{ o.razonSocialProveedor }}</td>
                     <td>{{ o.fechaEmision }}</td>
@@ -37,10 +37,15 @@
                     <td></td>
                     <td>ARS {{ o.montoTotal }}</td>
                     <td>{{o.estado}}</td>
-                    <td class="text-center ">
-                        <Button class="btn btn-warning m-1" (click)="modificarOrden(o.numOrdenCompra)"><i class="bi bi-pencil"></i></Button>
-                        <button class="btn btn-danger"><i class="bi bi-x-circle"></i></button>
-                    </td>
+                    <td class="text-center">
+                        <ng-container *ngIf="o.estado !== 'Cancelada'; else estadoCancelada">
+                          <Button class="btn btn-warning m-1" (click)="modificarOrden(o.numOrdenCompra)"><i class="bi bi-pencil"></i></Button>
+                          <button class="btn btn-danger" (click)="cancelarOrden(o.numOrdenCompra)" ><i class="bi bi-x-circle"></i></button>
+                        </ng-container>
+                        <ng-template #estadoCancelada>
+                          <span class="text-muted">Orden cancelada</span>
+                        </ng-template>
+                      </td>
                 </tr>
             </tbody>
         </table>

@@ -15,11 +15,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class OrdenFormAltaComponent implements OnInit {
 
-  constructor(public proveedoresServicio : ProveedoresService,
-      public productosServicio : ProductosService,
-      public ordenesServicio : OrdenesDeCompraService,
-      public router : Router,
-      public route : ActivatedRoute) { }
+  constructor(public proveedoresServicio: ProveedoresService,
+    public productosServicio: ProductosService,
+    public ordenesServicio: OrdenesDeCompraService,
+    public router: Router,
+    public route: ActivatedRoute) { }
 
   alertaSucces: boolean = false;
   alertaWarning: boolean = false;
@@ -53,7 +53,10 @@ export class OrdenFormAltaComponent implements OnInit {
 
   campoModificable: boolean = true; //cancela la modificacion de campo proveedor cuando ya se agrego un producto
 
-  numOrdenCompra : any = ''; //utilizado para el route
+  numOrdenCompra: any = ''; //utilizado para el route
+
+  estadoFormAlta: boolean = true;
+  estadoFormModificar: boolean = false;
 
   proveedores: Proveedores[] = []; //array de todos los proveedores para el select
   productosProveedor: Productos[] = []; //array con productos del proveedor seleccionado
@@ -66,6 +69,14 @@ export class OrdenFormAltaComponent implements OnInit {
       this.numOrdenCompra = params.get('numOrdenCompra');
     })
     //logica modificacion orden
+    if (this.numOrdenCompra !== null) {
+      this.estadoFormAlta = false; //se pasa false, es modificacion
+      this.estadoFormModificar = true;
+      this.ordenNG = this.ordenesServicio.getOrdenById(this.numOrdenCompra);
+      this.ordenDetalle = this.ordenNG.productos;
+      this.buscarProductosProveedor();
+      this.campoModificable = true;
+    }
   }
 
   //carga productos del proveedor seleccionado
@@ -77,64 +88,123 @@ export class OrdenFormAltaComponent implements OnInit {
   }
 
   crearOrdenCabecera(miFormCab: NgForm) {
-    console.log(miFormCab.value)
-    console.log(miFormCab.value.codPostalDirec)
-    if (
-      miFormCab.value.fechaEmisionOrd == null ||
-      miFormCab.value.fechaEntregaEspOrd == null ||
-      miFormCab.value.calleDirec == '' ||
-      miFormCab.value.numeroDirec == '' ||
-      miFormCab.value.codPostalDirec == ''
-    ) {
-      this.alertaWarning = true
-      console.log('error falta algun campo')
-      return;
-    }
-    if (this.ordenDetalle.length === 0) {
-      this.alertaWarningDetalle = true;
-      console.log('Error: Debe agregar al menos un producto al detalle');
-      return; // Detener la ejecución si hay un error
-    }
-    if (
-      miFormCab.value.fechaEmisionOrd !== null &&
-      miFormCab.value.fechaEntregaEspOrd !== null &&
-      miFormCab.value.calleDirec !== '' &&
-      miFormCab.value.numeroDirec !== '' &&
-      miFormCab.value.codPostalDirec !== null
-    ) {
-      console.log('joya entro bien todos campos ok')  
-      const proveedor = this.proveedoresServicio.getProveedorByid(miFormCab.value.codProvOrd);
-      const orden: OrdenCompra = {
-        numOrdenCompra: this.ordenNG.numOrdenCompra,
-        fechaEmision: miFormCab.value.fechaEmisionOrd,
-        fechaEntregaEsperada: miFormCab.value.fechaEntregaEspOrd,
-        direccion: {
-          calle: miFormCab.value.calleDirec,
-          numero: miFormCab.value.numeroDirec,
-          codPostal: miFormCab.value.codPostalDirec,
-        },
-        idProveedor: miFormCab.value.codProvOrd,
-        razonSocialProveedor: proveedor.razonSocial,
-        productos: this.ordenDetalle,
-        descripcionOrden: miFormCab.value.descripcionOrd,
-        estado: "Pendiente",
-        montoTotal: this.calcularSubtotal(),
+    if (this.estadoFormAlta == true && this.estadoFormModificar == false) { //estado ALTA
+      if (
+        miFormCab.value.fechaEmisionOrd == null ||
+        miFormCab.value.fechaEntregaEspOrd == null ||
+        miFormCab.value.calleDirec == '' ||
+        miFormCab.value.numeroDirec == '' ||
+        miFormCab.value.codPostalDirec == ''
+      ) {
+        this.alertaWarning = true
+        console.log('error falta algun campo')
+        return;
       }
-      let confirmacion = confirm('¿Desea crear la Orden de Compra?')
-      if (confirmacion) {
-        this.ordenesServicio.addOrden(orden);
-        miFormCab.reset()
-        this.alertaSucces = true;
-        this.alertaWarning = false;
-        this.alertaWarningDetalle = false;
-        this.campoModificable = true; //volver a hacer modificable el proveedor por si qiere cargar otra orden
-        this.ordenDetalle = [];
-        //hacer logica para que lo devuelva al listado de las ordenes de compra
-        this.router.navigate(['/ordenes-de-compra']);
+      if (this.ordenDetalle.length === 0) {
+        this.alertaWarningDetalle = true;
+        console.log('Error: Debe agregar al menos un producto al detalle');
+        return; // Detener la ejecución si hay un error
       }
-    }else{
-      console.log('falta algun campo')
-      this.alertaWarning = true;
+      if (
+        miFormCab.value.fechaEmisionOrd !== null &&
+        miFormCab.value.fechaEntregaEspOrd !== null &&
+        miFormCab.value.calleDirec !== '' &&
+        miFormCab.value.numeroDirec !== '' &&
+        miFormCab.value.codPostalDirec !== null
+      ) {
+        console.log('joya entro bien todos campos ok')
+        const proveedor = this.proveedoresServicio.getProveedorByid(miFormCab.value.codProvOrd);
+        const orden: OrdenCompra = {
+          numOrdenCompra: this.ordenNG.numOrdenCompra,
+          fechaEmision: miFormCab.value.fechaEmisionOrd,
+          fechaEntregaEsperada: miFormCab.value.fechaEntregaEspOrd,
+          direccion: {
+            calle: miFormCab.value.calleDirec,
+            numero: miFormCab.value.numeroDirec,
+            codPostal: miFormCab.value.codPostalDirec,
+          },
+          idProveedor: miFormCab.value.codProvOrd,
+          razonSocialProveedor: proveedor.razonSocial,
+          productos: this.ordenDetalle,
+          descripcionOrden: miFormCab.value.descripcionOrd,
+          estado: "Pendiente",
+          montoTotal: this.calcularSubtotal(),
+        }
+        let confirmacion = confirm('¿Desea crear la Orden de Compra?')
+        if (confirmacion) {
+          this.ordenesServicio.addOrden(orden);
+          miFormCab.reset()
+          this.alertaSucces = true;
+          this.alertaWarning = false;
+          this.alertaWarningDetalle = false;
+          this.campoModificable = true; //volver a hacer modificable el proveedor por si qiere cargar otra orden
+          this.ordenDetalle = [];
+          //hacer logica para que lo devuelva al listado de las ordenes de compra
+          this.router.navigate(['/ordenes-de-compra']);
+        }
+      } else {
+        console.log('falta algun campo')
+        this.alertaWarning = true;
+      }
+    }
+    if (this.estadoFormModificar == true && this.estadoFormAlta == false) { //estado MODIFICACION
+      if (
+        miFormCab.value.fechaEmisionOrd == null ||
+        miFormCab.value.fechaEntregaEspOrd == null ||
+        miFormCab.value.calleDirec == '' ||
+        miFormCab.value.numeroDirec == '' ||
+        miFormCab.value.codPostalDirec == ''
+      ) {
+        this.alertaWarning = true
+        console.log('error falta algun campo')
+        return;
+      }
+      if (this.ordenDetalle.length === 0) {
+        this.alertaWarningDetalle = true;
+        console.log('Error: Debe agregar al menos un producto al detalle');
+        return; // Detener la ejecución si hay un error
+      }
+      if (
+        miFormCab.value.fechaEmisionOrd !== null &&
+        miFormCab.value.fechaEntregaEspOrd !== null &&
+        miFormCab.value.calleDirec !== '' &&
+        miFormCab.value.numeroDirec !== '' &&
+        miFormCab.value.codPostalDirec !== null
+      ) {
+        console.log('joya entro bien todos campos ok')
+        const proveedor = this.proveedoresServicio.getProveedorByid(miFormCab.value.codProvOrd);
+        const orden: OrdenCompra = {
+          numOrdenCompra: this.ordenNG.numOrdenCompra,
+          fechaEmision: miFormCab.value.fechaEmisionOrd,
+          fechaEntregaEsperada: miFormCab.value.fechaEntregaEspOrd,
+          direccion: {
+            calle: miFormCab.value.calleDirec,
+            numero: miFormCab.value.numeroDirec,
+            codPostal: miFormCab.value.codPostalDirec,
+          },
+          idProveedor: miFormCab.value.codProvOrd,
+          razonSocialProveedor: proveedor.razonSocial,
+          productos: this.ordenDetalle,
+          descripcionOrden: miFormCab.value.descripcionOrd,
+          estado: "Pendiente",
+          montoTotal: this.calcularSubtotal(),
+        }
+        let confirmacion = confirm('¿Desea modificar la Orden de Compra?')
+        if (confirmacion) {
+          this.ordenesServicio.updateOrden(orden);
+          miFormCab.reset()
+          this.alertaSucces = true;
+          this.alertaWarning = false;
+          this.alertaWarningDetalle = false;
+          this.campoModificable = true; //volver a hacer modificable el proveedor por si qiere cargar otra orden
+          this.ordenDetalle = [];
+          //hacer logica para que lo devuelva al listado de las ordenes de compra
+          this.router.navigate(['/ordenes-de-compra']);
+        }
+      } else {
+        console.log('falta algun campo')
+        this.alertaWarning = true;
+      }
     }
   }
 
@@ -173,7 +243,7 @@ export class OrdenFormAltaComponent implements OnInit {
   calcularSubtotal(): number {
     return this.ordenDetalle.reduce((total, od) => total + (od.montoDetalle || 0), 0);
   }
-  eliminarDetalle(codSKU : string) {
+  eliminarDetalle(codSKU: string) {
     this.ordenDetalle = this.ordenDetalle.filter(detalle => detalle.codSKU !== codSKU);
   }
 

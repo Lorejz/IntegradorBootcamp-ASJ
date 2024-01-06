@@ -1,5 +1,9 @@
-<div class="row m-2 text-center mt-2 ">
+<div *ngIf="estadoFormAlta" class="row m-2 text-center mt-2 ">
     <h1>Crear Orden de Compra</h1>
+</div>
+
+<div *ngIf="estadoFormModificar" class="row m-2 text-center mt-2 ">
+    <h1>Modificar Orden de Compra</h1>
 </div>
 
 <div class="container pb-5">
@@ -121,8 +125,11 @@
                     <br>
                 </div>
             </div>
-            <div class="col-11 text-center mt-3  ">
+            <div *ngIf="estadoFormAlta" class="col-11 text-center mt-3 ">
                 <button type="submit" class="btn btn-success">Crear Orden de Compra</button>
+            </div>
+            <div *ngIf="estadoFormModificar" class="col-11 text-center mt-3 ">
+                <button type="submit" class="btn btn-warning ">Modificar Orden de Compra</button>
             </div>
         </div>
     </form>

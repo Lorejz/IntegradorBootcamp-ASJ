@@ -1,4 +1,3 @@
-import { Productos } from "./Productos";
 
 export interface OrdenCompra {
     numOrdenCompra: string;
