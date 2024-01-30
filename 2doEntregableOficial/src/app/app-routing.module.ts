@@ -7,6 +7,7 @@ import { ProdListaComponent } from './components/productos/prod-lista/prod-lista
 import { ProdFormAltaComponent } from './components/productos/prod-form-alta/prod-form-alta.component';
 import { OrdenListaComponent } from './components/ordenes-de-compra/orden-lista/orden-lista.component';
 import { OrdenFormAltaComponent } from './components/ordenes-de-compra/orden-form-alta/orden-form-alta.component';
+import { AltaRubroComponent } from './components/proveedores/alta-rubro/alta-rubro.component';
 
 const routes: Routes = [
   { path: 'home',
@@ -20,6 +21,7 @@ const routes: Routes = [
     children: [
       { path: '', component: ListaComponent },
       { path: 'alta-proveedor', component: FormAltaComponent },
+      { path: 'alta-rubro', component: AltaRubroComponent },
       { path: 'modificar-proveedor/:id', component: FormAltaComponent } 
     ]
     },

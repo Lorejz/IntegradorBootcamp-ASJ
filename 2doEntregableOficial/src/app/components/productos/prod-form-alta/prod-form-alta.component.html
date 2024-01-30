@@ -30,7 +30,7 @@
                 <input type="text" class="form-control" name="codSKUProd" [(ngModel)]="codSKUproducto" required minlength="5">
                 <small *ngIf="miForm.submitted && !miForm.controls['codSKUProd'].valid" class="text-danger">El código SKU debe tener al menos 5 caracteres.</small>
                 <br>
-                <label class="form-label">Categoria</label>
+                <label class="form-label">Categoria   *</label>
                 <select class="form-select" aria-label="Rubro" name="categoriaProd" [(ngModel)]="categoriaProducto" required>
                     <option value="Textil">Textil</option>
                     <option value="Electronico">Electronico</option>
@@ -47,11 +47,11 @@
                 <label class="form-label">Descripcion</label>
                 <br>
                 <textarea class="form-control" name="descProd" cols="53" rows="5" [(ngModel)]="descProducto" required></textarea>
-                <!--<input type="text" class="form-control" name="telefonoProv" [(ngModel)]="telefonoProveedor" required>-->
             </div>
             <div class="col-4">
                 <label class="form-label">Precio</label>
-                <input type="text" class="form-control" name="precioProd" [(ngModel)]="precioProducto" required>
+                <input type="text" class="form-control" name="precioProd" [(ngModel)]="precioProducto" required pattern="^\d+(\.\d{1,2})?$">
+                <small *ngIf="miForm.submitted && !miForm.controls['precioProd'].valid" class="text-danger">El precio debe ser un número decimal válido.</small>
                 <br>
                 <label for="suplier-iva" class="form-label">Proveedor</label>
                 <select class="form-select" name="razonProvProd" aria-label="razonSocial" [(ngModel)]="razonProvProducto" required>

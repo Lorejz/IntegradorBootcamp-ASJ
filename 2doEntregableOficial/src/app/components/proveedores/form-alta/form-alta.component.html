@@ -26,39 +26,55 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-4">
-                <label class="form-label">Razon Social</label>
-                <input type="text" class="form-control" name="razonSocialProv" [(ngModel)]="razonSocialProveedor" required>
+                <label class="form-label">Codigo *</label>
+                <input type="text" class="form-control" name="codigoProveedor" [(ngModel)]="proveedorCreateDTO.codigoProveedor" required
+                pattern="^[a-zA-Z]{4}-[a-zA-Z0-9]*$">
+<!--                 <small *ngIf="miForm.submitted && miForm.controls['codigoProveedor'].hasError('pattern')"
+                class="text-danger">Se debe respetar la nomenclatura ej: PROV-23
+                </small>
+                <small class="text-danger" *ngIf="miForm.controls['codigoProveedor'].hasError('required') && (miForm.controls['codigoProveedor'].touched || miForm.submitted)">
+                    El código es requerido.
+                </small> -->
                 <br>
-                <label class="form-label">Rubro</label>
-                <select class="form-select" aria-label="Rubro" name="rubroProv" [(ngModel)]="rubroProveedor" required>
-                    <option value="Textil">Textil</option>
-                    <option value="Electronico">Electronico</option>
-                    <option value="Muebles">Muebles</option>
-                    <option value="Software">Software</option>
-                    <option value="Otro">Otro</option>
+                <label class="form-label">Razon Social *</label>
+                <input type="text" class="form-control" name="razonSocialProveedor" [(ngModel)]="proveedorCreateDTO.razonSocialProveedor" required>
+                <small *ngIf="miForm.submitted && !miForm.controls['razonSocialProveedor'].valid" class="text-danger">Razon Social es requerido..</small>
+                <br>
+                <label class="form-label">Rubro *</label>
+                <select class="form-select" name="idRubro" aria-label="rubro" [(ngModel)]="proveedorCreateDTO.idRubro" required>
+                    <option *ngFor="let rubro of rubros" [value]="rubro.idRubro">{{ rubro.nombreRubro }}</option>
                 </select>
-                <br>
-                <label class="form-label">Email</label>
-                <input type="text" class="form-control" name="emailProv" [(ngModel)]="emailProveedor" required>
+<!--                 <small class="text-danger" *ngIf="miForm.controls['idRubro'].hasError('required') && (miForm.controls['idRubro'].touched || miForm.submitted)">
+                    Rubro es requerido.
+                </small> -->
                 <br>
                 <label class="form-label">Telefono</label>
-                <input type="text" class="form-control" name="telefonoProv" [(ngModel)]="telefonoProveedor" required>
+                <input type="text" class="form-control" name="telefonoProveedor" [(ngModel)]="proveedorCreateDTO.telefonoProveedor" required pattern="^\+?[0-9]{1,20}$">
+<!--                 <small *ngIf="miForm.submitted && miForm.controls['telefonoProveedor'].hasError('pattern')"
+                class="text-danger">Debe tener menos de 20 numeros.
+                </small>
+                <small class="text-danger" *ngIf="miForm.controls['telefonoProveedor'].hasError('required') && (miForm.controls['telefonoProveedor'].touched || miForm.submitted)">
+                    Telefono es requerido
+                </small> -->
+                <br>
+                <label class="form-label">CUIT</label>
+                <input type="text" class="form-control" name="cuitProveedor" [(ngModel)]="proveedorCreateDTO.cuitProveedor" required>
+                <br>
             </div>
             <div class="col-4">
                 <label class="form-label">Sitio Web</label>
-                <input type="text" class="form-control" name="sitioWebProv" [(ngModel)]="sitioWebProveedor" required>
+                <input type="text" class="form-control" name="sitioWebProveedor" [(ngModel)]="proveedorCreateDTO.sitioWebProveedor" required>
+                <br>
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" name="emailProveedor" [(ngModel)]="proveedorCreateDTO.emailProveedor" required>
+                <br>
+                <label class="form-label">URL Logo</label>
+                <input type="text" class="form-control" name="logoProveedor" [(ngModel)]="proveedorCreateDTO.logoProveedor" required>
                 <br>
                 <label for="suplier-iva" class="form-label">Condición frente al IVA</label>
-                <select class="form-select" name="ivaProv" aria-label="Condición IVA" [(ngModel)]="condIvaProveedor" required>
-                    <option value="IVA Responsable Inscripto">IVA Responsable Inscripto</option>
-                    <option value="IVA Sujeto Exento">IVA Sujeto Exento</option>
-                    <option value="Responsable Monotributo">Responsable Monotributo</option>
-                    <option value="Proveedor del Exterior">Proveedor del Exterior</option>
-                    <option value="Otro">Otro</option>
+                <select class="form-select" name="idCondicionIva" aria-label="condicion" [(ngModel)]="proveedorCreateDTO.idCondicionIva" required>
+                    <option *ngFor="let condicion of condicionesIva" [value]="condicion.idCondicionIva">{{ condicion.nombreCondicionIva }}</option>
                 </select>
-                <br>
-                <label class="form-label">CUIT</label>
-                <input type="text" class="form-control" name="cuitProv" [(ngModel)]="cuitProveedor" required>
             </div>
         </div>
         <div class="row justify-content-center mt-4 ">
@@ -69,16 +85,29 @@
         </div>
         <div class="row justify-content-center ">
             <div class="col-4">
-                <label class="form-label">Calle</label>
-                <input type="text" class="form-control" name="calleDirec" [(ngModel)]="calleDireccion" required>
+                <label for="suplier-iva" class="form-label">Pais</label>
+                <select class="form-select" name="idPais" aria-label="razonSocial" [(ngModel)]="proveedorCreateDTO.idPais" (change)="onPaisChange()" required>
+                    <option *ngFor="let p of paises" [value]="p.idPais">{{ p.nombrePais }}</option>
+                </select>
                 <br>
-                <label class="form-label">Cod. Postal</label>
-                <input type="text" class="form-control" name="codPostalDirec" [(ngModel)]="codPostalDireccion" required>
+                <label class="form-label">Localidad</label>
+                <input type="text" class="form-control" name="localidadDireccion" [(ngModel)]="proveedorCreateDTO.localidadDireccion" required>
+                <br>
+                <label class="form-label">Numero</label>
+                <input type="text" class="form-control" name="numDireccion" [(ngModel)]="proveedorCreateDTO.numDireccion" required>
+                
             </div>
             <div class="col-4">
-                <label class="form-label">Numero</label>
-                <input type="text" class="form-control" name="numeroDirec" [(ngModel)]="numeroDireccion" required>
+                <label for="suplier-iva" class="form-label">Provincia</label>
+                <select class="form-select" name="idProvincia" aria-label="provincia" [(ngModel)]="proveedorCreateDTO.idProvincia" required>
+                    <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">{{ provincia.nombreProvincia }}</option>
+                </select>
                 <br>
+                <label class="form-label">Calle</label>
+                <input type="text" class="form-control" name="calleDireccion" [(ngModel)]="proveedorCreateDTO.calleDireccion" required>
+                <br>
+                <label class="form-label">Cod. Postal</label>
+                <input type="text" class="form-control" name="codPostaDireccion" [(ngModel)]="proveedorCreateDTO.codPostaDireccion" required>
             </div>
         </div>
         <div class="row justify-content-center mt-4 ">
@@ -86,47 +115,33 @@
                 <hr>
                 <h4>Informacion de Contacto</h4>
             </div>
-            
         </div>
         <div class="row justify-content-center ">
             <div class="col-4">
                 <label class="form-label">Nombre</label>
-                <input type="text" class="form-control" name="nombreContac" [(ngModel)]="nombreContacto" required>
+                <input type="text" class="form-control" name="nombreContacto" [(ngModel)]="proveedorCreateDTO.nombreContacto" required>
                 <br>
                 <label class="form-label">Telefono</label>
-                <input type="text" class="form-control" name="telefonoContac" [(ngModel)]="telefonoContacto" required>
+                <input type="text" class="form-control" name="telefonoContacto" [(ngModel)]="proveedorCreateDTO.telefonoContacto" required>
                 <br>
                 <label class="form-label">Rol</label>
-                <input type="text" class="form-control" name="rolContac" [(ngModel)]="rolContacto">
+                <input type="text" class="form-control" name="rolContacto" [(ngModel)]="proveedorCreateDTO.rolContacto">
             </div>
             <div class="col-4">
                 <label class="form-label">Apellido</label>
-                <input type="text" class="form-control" name="apellidoContac" [(ngModel)]="apellidoContacto" required>
+                <input type="text" class="form-control" name="apellidoContacto" [(ngModel)]="proveedorCreateDTO.apellidoContacto" required>
                 <br>
                 <label class="form-label">Email</label>
-                <input type="text" class="form-control" name="emailContac" [(ngModel)]="emailContacto">
+                <input type="text" class="form-control" name="emailContacto" [(ngModel)]="proveedorCreateDTO.emailContacto">
             </div>
         </div>
-        
         <div class="row text-center m-3">
             <div *ngIf="estadoFormAlta" class="col-11 ">
-                <button type="submit" class="btn btn-success ">Crear Proveedor</button>
+                <button type="submit" class="btn btn-success">Crear Proveedor</button>
             </div>
             <div *ngIf="estadoFormModificar" class="col-11 ">
-                <button type="submit" class="btn btn-warning  ">Modificar Proveedor</button>
+                <button type="submit" class="btn btn-warning">Modificar Proveedor</button>
             </div>
         </div>
     </form>
 </div>
-
-
-
-
-<!-- <div class="col ">
-    "Textil" |
-    "Electronico" |
-    "Muebles" |
-    "Software" |
-    "Otro";
-    </select>
-</div> -->

@@ -25,8 +25,7 @@
 		Productos prod, Proveedores prov, Categorias cat
 	WHERE
 		prod.id_proveedor = prov.id_proveedor AND   
-		prod.id_categoria = cat.id_categoria AND
-		prod.isHabilitado_producto = 1;
+		prod.id_categoria = cat.id_categoria
 
 -- 3. Mostrar los datos que se pueden modificar (en el front) del producto con ID = 2.
 
@@ -200,4 +199,8 @@
 	-- Borrado Físico
 	DELETE FROM Productos
 	WHERE id_producto = 1;
+
+
+
+
 

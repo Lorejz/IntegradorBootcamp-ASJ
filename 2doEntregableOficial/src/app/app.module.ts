@@ -14,6 +14,8 @@ import { ProdListaComponent } from './components/productos/prod-lista/prod-lista
 import { OrdenFormAltaComponent } from './components/ordenes-de-compra/orden-form-alta/orden-form-alta.component';
 import { OrdenListaComponent } from './components/ordenes-de-compra/orden-lista/orden-lista.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AltaRubroComponent } from './components/proveedores/alta-rubro/alta-rubro.component';
 
 @NgModule({
   declarations: [
@@ -26,13 +28,15 @@ import { FooterComponent } from './components/footer/footer.component';
     ProdListaComponent,
     OrdenFormAltaComponent,
     OrdenListaComponent,
-    FooterComponent
+    FooterComponent,
+    AltaRubroComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
