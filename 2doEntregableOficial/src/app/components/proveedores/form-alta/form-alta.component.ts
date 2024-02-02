@@ -85,8 +85,6 @@ export class FormAltaComponent implements OnInit {
 
     if (this.id !== null) {
       console.log('si hay id')
-      const proveedor = this.proveedorServicio.getProveedorByid(this.id);
-
       this.estadoFormAlta = false; //al estar en false, no entra a la logica de creacion del submit de la funcion 'crearProveedor()'
       this.estadoFormModificar = true;
 

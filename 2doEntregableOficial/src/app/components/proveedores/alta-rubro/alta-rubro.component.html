@@ -37,14 +37,12 @@
             <table>
                 <thead>
                     <tr>
-                        <!-- <th>Cod.</th> -->
                         <th>Nombre</th>
                         <th>Accion</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let r of rubros">
-                        <!-- <td>{{ r.idRubro }}</td> -->
                         <td>{{ r.nombreRubro }}</td>
                         <td class="text-center ">
                             <Button class="btn btn-warning m-1" (click)="modificarRubro(r.idRubro, r.nombreRubro)"><i

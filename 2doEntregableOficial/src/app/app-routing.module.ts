@@ -8,6 +8,8 @@ import { ProdFormAltaComponent } from './components/productos/prod-form-alta/pro
 import { OrdenListaComponent } from './components/ordenes-de-compra/orden-lista/orden-lista.component';
 import { OrdenFormAltaComponent } from './components/ordenes-de-compra/orden-form-alta/orden-form-alta.component';
 import { AltaRubroComponent } from './components/proveedores/alta-rubro/alta-rubro.component';
+import { DetalleProductoComponent } from './components/productos/detalle-producto/detalle-producto.component';
+import { AltaCategoriaComponent } from './components/productos/alta-categoria/alta-categoria.component';
 
 const routes: Routes = [
   { path: 'home',
@@ -21,7 +23,7 @@ const routes: Routes = [
     children: [
       { path: '', component: ListaComponent },
       { path: 'alta-proveedor', component: FormAltaComponent },
-      { path: 'alta-rubro', component: AltaRubroComponent },
+      { path: 'alta-rubros', component: AltaRubroComponent },
       { path: 'modificar-proveedor/:id', component: FormAltaComponent } 
     ]
     },
@@ -29,7 +31,9 @@ const routes: Routes = [
     children: [
       { path: '', component: ProdListaComponent },
       { path: 'alta-producto', component: ProdFormAltaComponent },
-      { path: 'modificar-producto/:codSKU', component: ProdFormAltaComponent }
+      { path: 'modificar-producto/:id', component: ProdFormAltaComponent },
+      { path: 'detalle-producto/:id', component: DetalleProductoComponent },
+      { path: 'gestionar-categorias', component: AltaCategoriaComponent }
     ]
   },
   { path: 'ordenes-de-compra', 

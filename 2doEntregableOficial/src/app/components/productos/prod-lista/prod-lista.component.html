@@ -1,44 +1,112 @@
-<!-- Div de Listado productos -->
-<div class="row">
-    <div class="col-10 border">
-        <h3 class="mt-2">
+<div class="class row text-center pt-2 ">
+    <div class="col-12">
+        <h1 class="mt-2">
             Listado de Productos
-        </h3>
+        </h1>
     </div>
-    <div class="col-2 border text-center">
-        <button class="btn btn-success btn-sm m-1" routerLink="./alta-producto">
+</div>
+<div class="row">
+    <div class="col-3 pt-1 ">
+        <label for="">Filtrar por Nombre de Producto: </label>
+        <input class="form-control me-2 w-80  " type="search" placeholder="ej: 'Cama infantil' " aria-label="Search"
+            [(ngModel)]="filtroNombreProducto">
+    </div>
+    <div class="col-3 pt-1 ">
+        <label for="">Filtrar por Activo/Baja </label>
+        <select class="form-select w-75 " aria-label="Rubro" name="categoriaProd" [(ngModel)]="filtro"
+            (change)="onFiltroChange()">
+            <option value="Activos">Activos</option>
+            <option value="Eliminados">Eliminados</option>
+            <option value="Todos">Todos</option>
+        </select>
+    </div>
+    <div class="col-3 pt-1">
+        <label class="">Filtrar por Categoria</label>
+        <select class="form-select" name="idRubro" aria-label="rubro" [(ngModel)]="categoriaFiltro"
+            (change)="onFiltroCategoriaChange()">
+            <option *ngFor="let c of categorias" [value]="c.idCategoria">{{ c.nombreCategoria }}</option>
+        </select>
+    </div>
+    <div class="col-3 text-end pt-4    ">
+        <button class="btn btn-success btn-sm m-1 p-2" routerLink="./alta-producto">
             Alta Producto
+        </button>
+        <button class="btn btn-primary btn-sm ms-2 p-2" routerLink="./gestionar-categorias">
+            Gestion Categorias
         </button>
     </div>
 </div>
-
-<!-- Div de la tabla con productos -->
-<div class="row border">
+<div class="row">
     <div class="col-12 p-3">
-        <table>
-            <thead>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Nombre Producto</th>
-                    <th>Categoria</th>
-                    <th>Proveedor (Razon Social)</th>
-                    <th>Precio</th>
-                    <th>Accion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let p of productos">
-                    <td><img src="{{ p.imagen }}" alt="" height="100px" width="100px"></td>
-                    <td>{{ p.nombre }}</td>
-                    <td>{{ p.categoria }}</td>
-                    <td>{{ p.razonSocialProveedor }}</td>
-                    <td>ARS {{ p.precio }}</td>
-                    <td class="text-center ">
-                        <Button class="btn btn-warning m-1" (click)="modificarProducto(p.codSKUProducto)"><i class="bi bi-pencil"></i></Button>
-                        <button class="btn btn-danger" (click)="eliminarProducto(p.codSKUProducto)"><i class="bi bi-trash3"></i></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <ng-container *ngIf="productosDTO && productosDTO.length > 0; else noRegistros">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>SKU</th>
+                        <th>Nombre Producto</th>
+                        <th>Categoria</th>
+                        <th>Proveedor (Razon Social)</th>
+                        <th>Precio</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of productosDTO | filtroNombreProducto: filtroNombreProducto"
+                        [ngStyle]="{'background-color': p.habilitado ? 'inherit' : '#ccc'}">
+                        <td><img src="{{ p.imagenProducto }}" alt="" height="100px" width="100px"></td>
+                        <td>{{ p.skuProducto }}</td>
+                        <td>{{ p.nombreProducto }}</td>
+                        <td>{{ p.nombreCategoria }}</td>
+                        <td>{{ p.razonSocialProvProducto }}</td>
+                        <td>ARS {{ p.precioProducto }}</td>
+                        <td class="text-center ">
+                            <button class="btn btn-primary m-1" (click)="verDetalleProducto(p.idProducto)"><i
+                                    class="bi bi-eye"></i>
+                            </button>
+                            <Button class="btn btn-warning" (click)="modificarProducto(p.idProducto)"><i
+                                    class="bi bi-pencil"></i></Button>
+                            <button *ngIf="p.habilitado" class="btn btn-danger m-1"
+                                (click)="eliminarProducto(p.idProducto)"><i class="bi bi-trash3"></i></button>
+                            <button *ngIf="!p.habilitado" class="btn btn-success m-1"
+                                (click)="darDeAltaProducto(p.idProducto)"><i class="bi bi-upload"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+        <ng-template #noRegistros>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>SKU</th>
+                        <th>Nombre Producto</th>
+                        <th>Categoria</th>
+                        <th>Proveedor (Razon Social)</th>
+                        <th>Precio</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row mt-5 ">
+                <div class="col-12 text-center">
+                    <hr>
+                    <p>No hay registros disponibles.</p>
+                    <img src="https://i.gifer.com/818o.gif" alt="" width="200px" height="150px">
+                </div>
+            </div>
+        </ng-template>
     </div>
 </div>

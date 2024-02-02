@@ -1,0 +1,64 @@
+<div class="row text-center m-2">
+    <h2>
+        Gestion Categorias
+    </h2>
+</div>
+
+<div class="container ">
+    <form #miForm="ngForm" (ngSubmit)="crearCategoria(miForm)">
+        <div class="row justify-content-center ">
+            <div class="col-4 ">
+                <button type="button" class="btn btn-primary m-1 " routerLink="/productos"><i
+                        class="bi bi-arrow-bar-left"></i>Volver</button>
+                <hr>
+                <h3>
+                    Alta Categoria
+                </h3>
+                <label for="">Nombre Categoria</label>
+                <input type="text" class="form-control" name="nombreCategoria"
+                    [(ngModel)]="newCategoria.nombreCategoria" required>
+            </div>
+        </div>
+        <div class="row text-center  ">
+            <div class="col-12 mt-2">
+                <button type="submit" class="btn btn-success">Crear Categoria</button>
+            </div>
+        </div>
+    </form>
+    <div class="row justify-content-center ">
+        <div class="col-4">
+            <hr>
+            <h3>
+                Listado de Categorias
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center ">
+        <div class="col-4">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of categorias" [ngClass]="{'categoria-inactiva': !c.habilitadoCategoria}">
+                        <td>{{ c.nombreCategoria }}</td>
+                        <td class="text-center ">
+                            <Button  class="btn btn-warning m-1"
+                                (click)="modificarCategoria(c.idCategoria,c.nombreCategoria)"><i
+                                    class="bi bi-pencil"></i></Button>
+                            <button *ngIf="c.habilitadoCategoria" class="btn btn-danger"><i
+                                    (click)="eliminarCategoria(c.idCategoria)" class="bi bi-trash3"></i></button>
+                            <button *ngIf="!c.habilitadoCategoria" class="btn btn-success"
+                                (click)="darAltaCategoria(c.idCategoria)">
+                                <i class="bi bi-upload"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

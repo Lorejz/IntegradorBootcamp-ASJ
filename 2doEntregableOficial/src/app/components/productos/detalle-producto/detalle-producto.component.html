@@ -1,0 +1,28 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Detalle del Producto</h1>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-2">
+            <a routerLink="/productos" class="btn btn-primary"><i class="bi bi-arrow-bar-left"></i> Volver</a>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <h3 class="text-center">{{ producto.nombreProducto }}</h3>
+            <img src="{{ producto.imagenProducto }}" alt="{{ producto.nombreProducto }}" class="img-fluid rounded" />
+        </div>
+        <div class="col-lg-6">
+            <h3>Informacion del producto: </h3>
+            <p><strong>SKU:</strong> {{ producto.skuProducto }}</p>
+            <p><strong>Categoría:</strong> {{ categoria.nombreCategoria }}</p>
+            <p><strong>Proveedor:</strong> {{ proveedor.razonSocialProveedor }}</p>
+            <p><strong>Precio:</strong> ARS {{ producto.precioProducto}}</p>
+            <br>
+            <h4>Descripción del Producto</h4>
+            <p class="lead">{{ producto.descProducto }}</p>
+        </div>
+    </div>
+</div>

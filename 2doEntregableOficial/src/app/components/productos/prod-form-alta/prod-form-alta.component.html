@@ -27,39 +27,36 @@
         <div class="row justify-content-center">
             <div class="col-4">
                 <label class="form-label">Codigo SKU   *</label>
-                <input type="text" class="form-control" name="codSKUProd" [(ngModel)]="codSKUproducto" required minlength="5">
-                <small *ngIf="miForm.submitted && !miForm.controls['codSKUProd'].valid" class="text-danger">El código SKU debe tener al menos 5 caracteres.</small>
-                <br>
-                <label class="form-label">Categoria   *</label>
-                <select class="form-select" aria-label="Rubro" name="categoriaProd" [(ngModel)]="categoriaProducto" required>
-                    <option value="Textil">Textil</option>
-                    <option value="Electronico">Electronico</option>
-                    <option value="Muebles">Muebles</option>
-                    <option value="Software">Software</option>
-                    <option value="Otro">Otro</option>
-                </select>
-                <small *ngIf="miForm.submitted && !miForm.controls['categoriaProd'].valid" class="text-danger">Por favor, selecciona una categoría.</small>
+                <input type="text" class="form-control" name="skuProducto" [(ngModel)]="productoDTO.skuProducto" required minlength="5">
                 <br>
                 <label class="form-label">Nombre del Producto</label>
-                <input type="text" class="form-control" name="nombreProd" [(ngModel)]="nombreProducto" required pattern=".{5,}">
-                <small *ngIf="miForm.submitted && !miForm.controls['nombreProd'].valid" class="text-danger">El nombre del producto debe tener al menos 5 caracteres.</small>
+                <input type="text" class="form-control" name="nombreProducto" [(ngModel)]="productoDTO.nombreProducto" required pattern=".{5,}">
+                <br>
+                <label class="form-label">Categoria</label>
+                <select class="form-select" name="idCategoria" aria-label="rubro" [(ngModel)]="productoDTO.idCategoria">
+                    <option *ngFor="let c of categorias" [value]="c.idCategoria">{{ c.nombreCategoria }}</option>
+                </select>
                 <br>
                 <label class="form-label">Descripcion</label>
                 <br>
-                <textarea class="form-control" name="descProd" cols="53" rows="5" [(ngModel)]="descProducto" required></textarea>
+                <textarea class="form-control" name="descProducto" cols="53" rows="5" [(ngModel)]="productoDTO.descProducto" required></textarea>
             </div>
             <div class="col-4">
                 <label class="form-label">Precio</label>
-                <input type="text" class="form-control" name="precioProd" [(ngModel)]="precioProducto" required pattern="^\d+(\.\d{1,2})?$">
-                <small *ngIf="miForm.submitted && !miForm.controls['precioProd'].valid" class="text-danger">El precio debe ser un número decimal válido.</small>
-                <br>
-                <label for="suplier-iva" class="form-label">Proveedor</label>
-                <select class="form-select" name="razonProvProd" aria-label="razonSocial" [(ngModel)]="razonProvProducto" required>
-                    <option *ngFor="let p of proveedores" [value]="p.id">{{ p.razonSocial }}</option>
-                </select>
+                <input type="text" class="form-control" name="precioProducto" [(ngModel)]="productoDTO.precioProducto" required pattern="^\d+(\.\d{1,2})?$">
                 <br>
                 <label class="form-label">URL Imagen</label>
-                <input type="text" class="form-control" name="imagenProd" [(ngModel)]="imagenProducto" required>
+                <input type="text" class="form-control" name="imagenProducto" [(ngModel)]="productoDTO.imagenProducto" required>
+                <br>
+                <label for="suplier-iva" class="form-label">Proveedor</label>
+                <select class="form-select" name="idProveedor" aria-label="razonSocial" [(ngModel)]="productoDTO.idProveedor" (change)="onProveedorSeleccionado(productoDTO.idProveedor)" required>
+                    <option *ngFor="let p of proveedoresDTO" [value]="p.idProveedor">{{ p.razonSocialProveedor }}</option>
+                </select>
+                <br>
+                <div class="text-center ">
+                    <img *ngIf="logoProveedorSeleccionado" [src]="logoProveedorSeleccionado" alt="Logo del proveedor">
+                </div>
+                <br>
             </div>
             <div class="row text-center m-3">
                 <div *ngIf="estadoFormAlta" class="col-11 ">

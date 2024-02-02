@@ -6,6 +6,12 @@ import proveedores from '../../../data/proveedores';
 import { Productos } from '../../../interfaces/Productos';
 import { ProductosService } from '../../../services/productos.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductosFormDTO } from '../../../interfaces/ProductosFormDTO';
+import { ProveedoresListDTO } from '../../../interfaces/ProveedoresListDTO';
+import { ProveedoresBackService } from '../../../services/proveedores-back.service';
+import { ProductosBackService } from '../../../services/productos-back.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-prod-form-alta',
@@ -14,7 +20,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProdFormAltaComponent implements OnInit {
 
-  constructor(public proveedoresServicio: ProveedoresService, public productosServicio: ProductosService, public route: ActivatedRoute, public router: Router) { }
+  constructor(
+    public proveedoresServicio: ProveedoresService,
+    public productosServicio: ProductosService,
+    private proveedoresBackService : ProveedoresBackService,
+    private productosBackService : ProductosBackService,
+    public route: ActivatedRoute,
+    public router: Router
+    ) { }
 
   alertaSucces: boolean = false;
   alertaWarning: boolean = false;
@@ -22,53 +35,55 @@ export class ProdFormAltaComponent implements OnInit {
   estadoFormAlta: boolean = true;
   estadoFormModificar: boolean = false;
 
-  //HACER EN ngModels poniendo ' productoMod.razonSocialProveedor ' --> para hacer referencia al ngModel en el html
-  productoNG : Productos = {
-    idProveedor: '',
-    razonSocialProveedor: '',        
-    codSKUProducto: '',
-    categoria: '',
-    nombre: '',
-    descripcion: '',
-    precio: null,
-    imagen: '',
+  proveedores: Proveedores[] = [];
+  id: any = ''; //utilizado en el routing, para modificar
+  //cosas nuevas
+
+  proveedoresDTO : ProveedoresListDTO[]= [];
+  categorias : any[] = [];
+
+  productoDTO : ProductosFormDTO = {
+    skuProducto : "",
+    idCategoria : null,
+    idProveedor : null,
+    nombreProducto : "",
+    imagenProducto : "",
+    descProducto : "",
+    precioProducto : null
   }
 
-  codSKUproducto = '';
-  categoriaProducto = '';
-  nombreProducto = '';
-  descProducto = '';
-  precioProducto: number | null = null;
-  razonProvProducto = ''; //id Proveedor
-  imagenProducto = '';
+  logoProveedorSeleccionado : String | undefined = "https://cdn.pixabay.com/animation/2023/03/20/02/45/02-45-27-186_512.gif";
 
-  proveedores: Proveedores[] = [];
-
-  codSKU: any = ''; //utilizado en el routing, para modificar
-
+  //------------------
 
   ngOnInit(): void {
-    this.proveedores = this.proveedoresServicio.getProveedores();
-
-    this.route.paramMap.subscribe(params => {
-      this.codSKU = params.get('codSKU');
+    /* this.proveedores = this.proveedoresServicio.getProveedores(); */
+    this.proveedoresBackService.getProveedoresListActivos().subscribe( data => {
+      this.proveedoresDTO = data;
+    } )
+    this.productosBackService.buscarCategorias().subscribe( data => {
+      this.categorias = data;
     })
 
-    if (this.codSKU !== null) {
-      console.log('hay sku de producto, a modificar')
+    this.route.paramMap.subscribe(params => {
+      this.id = params.get('id');
+    })
 
+    if (this.id !== null) {
+      console.log('hay sku de producto, a modificar')
       this.estadoFormAlta = false; //al estar en false, no entra a la logica de creacion del submit de la funcion 'crearProveedor()'
       this.estadoFormModificar = true;
 
-      const producto = this.productosServicio.getProductoBySKU(this.codSKU);
+      this.productosBackService.getProductoById(this.id).subscribe( producto => {
+        this.productoDTO = producto;
+        if(this.productoDTO.idProveedor != null) {
+          this.proveedoresBackService.getProveedorFormDTO(this.productoDTO.idProveedor).subscribe( prov => {
+            this.logoProveedorSeleccionado = prov.logoProveedor;
+          })
+        }
+      })
 
-      this.codSKUproducto = producto.codSKUProducto;
-      this.categoriaProducto = producto.categoria;
-      this.nombreProducto = producto.nombre;
-      this.descProducto = producto.descripcion;
-      this.precioProducto = producto.precio;
-      this.razonProvProducto = producto.idProveedor;
-      this.imagenProducto = producto.imagen;
+
 
     } else {
       console.log('no hay sku, es un producto nuevo')
@@ -78,9 +93,23 @@ export class ProdFormAltaComponent implements OnInit {
   crearProducto(miForm: NgForm) {
     if (this.estadoFormAlta == true && this.estadoFormModificar == false) { // estado ALTA
       if (!miForm.valid) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Verifica que la informacion sea válida!"
+        });
         this.alertaWarning = true;
       } else {
-        const proveedor: Proveedores = this.proveedoresServicio.getProveedorByid(miForm.value.razonProvProd);
+        const  newProductoDTO : ProductosFormDTO = {
+          skuProducto : miForm.value.skuProducto ,
+          idCategoria :  miForm.value.idCategoria ,
+          idProveedor :  miForm.value.idProveedor ,
+          nombreProducto : miForm.value.nombreProducto ,
+          imagenProducto : miForm.value.imagenProducto ,
+          descProducto : miForm.value.descProducto ,
+          precioProducto :  miForm.value.precioProducto 
+        }
+/*         const proveedor: Proveedores = this.proveedoresServicio.getProveedorByid(miForm.value.razonProvProd);
         const producto: Productos = {
           idProveedor: miForm.value.razonProvProd,
           razonSocialProveedor: proveedor.razonSocial,
@@ -90,40 +119,88 @@ export class ProdFormAltaComponent implements OnInit {
           descripcion: miForm.value.descProd,
           precio: miForm.value.precioProd,
           imagen: miForm.value.imagenProd,
-        }
-        console.log(producto);
-        this.productosServicio.addProducto(producto);
+        } */
+        console.log(newProductoDTO);
+        this.productosBackService.createProducto(newProductoDTO).subscribe( msj => {
+          console.log(msj);
+        })
+        Swal.fire({
+          title: "Producto Cargado",
+          text: "El producto se ha cargado correctamente.",
+          icon: "success"
+        });
+        this.router.navigate(['/proveedores']);        
         miForm.reset();
         this.alertaSucces = true;
         this.alertaWarning = false;
-        //this.router.navigate(['/productos']); DAR ALGUN FEEDBACK DE Q SE CREEO
+        this.router.navigate(['/productos']);
       }
     }
     if(this.estadoFormModificar == true && this.estadoFormAlta == false ){ // ESTADO MODIFICACION
       if (!miForm.valid) {
         this.alertaWarning = true;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Verifica que la informacion sea válida!"
+        });
       } else {
-        const proveedorMod: Proveedores = this.proveedoresServicio.getProveedorByid(miForm.value.razonProvProd);
-        const productoMod: Productos = {
-          idProveedor: miForm.value.razonProvProd,
-          razonSocialProveedor: proveedorMod.razonSocial,
-          codSKUProducto: miForm.value.codSKUProd,
-          categoria: miForm.value.categoriaProd,
-          nombre: miForm.value.nombreProd,
-          descripcion: miForm.value.descProd,
-          precio: miForm.value.precioProd,
-          imagen: miForm.value.imagenProd,
+        const  modProductoDTO : ProductosFormDTO = {
+          skuProducto : miForm.value.skuProducto ,
+          idCategoria :  miForm.value.idCategoria ,
+          idProveedor :  miForm.value.idProveedor ,
+          nombreProducto : miForm.value.nombreProducto ,
+          imagenProducto : miForm.value.imagenProducto ,
+          descProducto : miForm.value.descProducto ,
+          precioProducto :  miForm.value.precioProducto 
         }
-        let confirmacion = confirm("¿Desea modificar los datos del Producto?");
-        if (confirmacion){
-          this.productosServicio.updateProducto(productoMod);
-          miForm.reset();
-          this.alertaSucces = true;
-          this.alertaWarning = false;
-          this.router.navigate(['/productos']);
-        }
+        const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+          },
+          buttonsStyling: false
+        });
+        
+        swalWithBootstrapButtons.fire({
+          title: "¿Desea modificar los datos del Producto?",
+          text: "Podrá revertir esto.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí, modificarlo",
+          cancelButtonText: "No, cancelar",
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Lógica para modificar el producto
+            this.productosBackService.actualizarProducto(this.id, modProductoDTO).subscribe((msj) => {
+              console.log(msj);
+            });
+            miForm.reset();
+            this.alertaSucces = true;
+            this.alertaWarning = false;
+            this.router.navigate(['/productos']);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+              title: "Cancelado",
+              text: "Los datos del producto no han sido modificados.",
+              icon: "error"
+            });
+          }
+        });
       }
     }
   }
 
+  onProveedorSeleccionado(id : any) {
+    // Obtener el proveedor seleccionado
+    this.proveedoresBackService.getProveedorFormDTO(id).subscribe( data => {
+      this.logoProveedorSeleccionado = data.logoProveedor;
+    })
+  }
+
+
+
+
+  
 }

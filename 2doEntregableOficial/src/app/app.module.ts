@@ -16,6 +16,9 @@ import { OrdenListaComponent } from './components/ordenes-de-compra/orden-lista/
 import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AltaRubroComponent } from './components/proveedores/alta-rubro/alta-rubro.component';
+import { FiltroNombreProductoPipe } from './pipes/filtro-nombre-producto.pipe';
+import { DetalleProductoComponent } from './components/productos/detalle-producto/detalle-producto.component'; 
+import { AltaCategoriaComponent } from './components/productos/alta-categoria/alta-categoria.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { AltaRubroComponent } from './components/proveedores/alta-rubro/alta-rub
     OrdenFormAltaComponent,
     OrdenListaComponent,
     FooterComponent,
-    AltaRubroComponent
+    AltaRubroComponent,
+    FiltroNombreProductoPipe,
+    DetalleProductoComponent,
+    AltaCategoriaComponent
   ],
   imports: [
     BrowserModule,
