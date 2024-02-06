@@ -158,4 +158,9 @@ export class ListaComponent implements OnInit {
       });
 
     }
+
+    verDetalleProveedor(idProveedor:any){
+      this.router.navigate(['/proveedores/detalle-proveedor/',idProveedor])
+    }
+    
 }

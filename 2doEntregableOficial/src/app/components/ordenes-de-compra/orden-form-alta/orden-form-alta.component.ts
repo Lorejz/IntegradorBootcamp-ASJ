@@ -7,6 +7,13 @@ import { Productos } from '../../../interfaces/Productos';
 import { OrdenCompra, ProductosCantidad } from '../../../interfaces/OrdenCompra';
 import { OrdenesDeCompraService } from '../../../services/ordenes-de-compra.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProveedoresBackService } from '../../../services/proveedores-back.service';
+import { ProductosBackService } from '../../../services/productos-back.service';
+import { ProveedoresListDTO } from '../../../interfaces/ProveedoresListDTO';
+import { ProductosListDTO } from '../../../interfaces/ProductosListDTO';
+import { OrdenesBackService } from '../../../services/ordenes-back.service';
+import { OrdenDetalleCreateDTO } from '../../../interfaces/OrdenDetalleCreateDTO';
+import { OrdenCreateDTO } from '../../../interfaces/OrdenCreateDTO';
 
 @Component({
   selector: 'app-orden-form-alta',
@@ -15,11 +22,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class OrdenFormAltaComponent implements OnInit {
 
-  constructor(public proveedoresServicio: ProveedoresService,
+  constructor(
+    public proveedoresServicio: ProveedoresService,
     public productosServicio: ProductosService,
     public ordenesServicio: OrdenesDeCompraService,
+    private proveedoresBackServicio: ProveedoresBackService,
+    private productosBackServicio: ProductosBackService,
+    private ordenesBackServicio: OrdenesBackService,
     public router: Router,
-    public route: ActivatedRoute) { }
+    public route: ActivatedRoute
+  ) { }
 
   alertaSucces: boolean = false;
   alertaWarning: boolean = false;
@@ -48,7 +60,7 @@ export class OrdenFormAltaComponent implements OnInit {
     estado: "Pendiente"
   }
 
-  codProductoOrden = '';
+  codProductoOrden: number | null = null;
   cantProducto: number | null = null;
 
   campoModificable: boolean = true; //cancela la modificacion de campo proveedor cuando ya se agrego un producto
@@ -62,8 +74,30 @@ export class OrdenFormAltaComponent implements OnInit {
   productosProveedor: Productos[] = []; //array con productos del proveedor seleccionado
   ordenDetalle: ProductosCantidad[] = []; //array con el detalle de los productos
 
+  //cosas nuevas
+
+  codigoOrden: number | null = null;
+  codProveedor: number | null = null;
+  proveedoresDTO: ProveedoresListDTO[] = []
+  ProductosProvDTO: ProductosListDTO[] = [];
+
+  ordenDetalleDTO: OrdenDetalleCreateDTO[] = [];
+
+  logoProveedorSeleccionado: String | undefined = "https://cdn.pixabay.com/animation/2023/03/20/02/45/02-45-27-186_512.gif";
+
+
+  fechaEmisionSeleccionada: Date | null = null;
+  actualizarFechaEmision() {
+    this.fechaEmisionSeleccionada = this.ordenNG.fechaEmision;
+  }
+
+  //---------------
+
   ngOnInit(): void {
-    this.proveedores = this.proveedoresServicio.getProveedores();
+    //this.proveedores = this.proveedoresServicio.getProveedores();
+    this.proveedoresBackServicio.getProveedoresListActivos().subscribe(data => {
+      this.proveedoresDTO = data;
+    })
 
     this.route.paramMap.subscribe(params => {
       this.numOrdenCompra = params.get('numOrdenCompra');
@@ -79,42 +113,43 @@ export class OrdenFormAltaComponent implements OnInit {
     }
   }
 
-  //carga productos del proveedor seleccionado
   buscarProductosProveedor() {
-    console.log('entro a funcion buscarProductosProveedor()')
-    console.log('codigo proveedor' + this.ordenNG.idProveedor)
-    this.productosProveedor = this.productosServicio.getProductosByProveedor(this.ordenNG.idProveedor);
-    console.log(this.productosProveedor);
+    if (this.codProveedor) {
+      this.productosBackServicio.getProductosByProveedor(this.codProveedor).subscribe(prod => {
+        this.ProductosProvDTO = prod;
+      })
+    }
   }
 
   crearOrdenCabecera(miFormCab: NgForm) {
     if (this.estadoFormAlta == true && this.estadoFormModificar == false) { //estado ALTA
       if (
         miFormCab.value.fechaEmisionOrd == null ||
-        miFormCab.value.fechaEntregaEspOrd == null ||
-        miFormCab.value.calleDirec == '' ||
-        miFormCab.value.numeroDirec == '' ||
-        miFormCab.value.codPostalDirec == ''
+        miFormCab.value.fechaEntregaEspOrd == null
       ) {
         this.alertaWarning = true
         console.log('error falta algun campo')
         return;
       }
-      if (this.ordenDetalle.length === 0) {
+      if (this.ordenDetalleDTO.length === 0) {
         this.alertaWarningDetalle = true;
         console.log('Error: Debe agregar al menos un producto al detalle');
         return; // Detener la ejecución si hay un error
       }
       if (
         miFormCab.value.fechaEmisionOrd !== null &&
-        miFormCab.value.fechaEntregaEspOrd !== null &&
-        miFormCab.value.calleDirec !== '' &&
-        miFormCab.value.numeroDirec !== '' &&
-        miFormCab.value.codPostalDirec !== null
+        miFormCab.value.fechaEntregaEspOrd !== null
       ) {
         console.log('joya entro bien todos campos ok')
-        const proveedor = this.proveedoresServicio.getProveedorByid(miFormCab.value.codProvOrd);
-        const orden: OrdenCompra = {
+        const ordenDTO : OrdenCreateDTO = {
+          idProveedor : Number(this.codProveedor),
+          fechaEmisionOrden : miFormCab.value.fechaEmisionOrd,
+          fechaEntregaOrden : miFormCab.value.fechaEntregaEspOrd,
+          infoOrden : miFormCab.value.descripcionOrd,
+          numeroOrden : this.codigoOrden,
+          montoTotalOrden : this.calcularSubtotal()
+        }
+/*         const orden: OrdenCompra = {
           numOrdenCompra: this.ordenNG.numOrdenCompra,
           fechaEmision: miFormCab.value.fechaEmisionOrd,
           fechaEntregaEsperada: miFormCab.value.fechaEntregaEspOrd,
@@ -129,16 +164,21 @@ export class OrdenFormAltaComponent implements OnInit {
           descripcionOrden: miFormCab.value.descripcionOrd,
           estado: "Pendiente",
           montoTotal: this.calcularSubtotal(),
-        }
+        } */
         let confirmacion = confirm('¿Desea crear la Orden de Compra?')
         if (confirmacion) {
-          this.ordenesServicio.addOrden(orden);
+          //this.ordenesServicio.addOrden(orden);
+          console.log(ordenDTO);
+          console.log(this.ordenDetalleDTO);
+          this.ordenesBackServicio.crearOrden(ordenDTO,this.ordenDetalleDTO).subscribe( msj => {
+            console.log(msj);
+          } )
           miFormCab.reset()
           this.alertaSucces = true;
           this.alertaWarning = false;
           this.alertaWarningDetalle = false;
           this.campoModificable = true; //volver a hacer modificable el proveedor por si qiere cargar otra orden
-          this.ordenDetalle = [];
+          //this.ordenDetalle = [];
           //hacer logica para que lo devuelva al listado de las ordenes de compra
           this.router.navigate(['/ordenes-de-compra']);
         }
@@ -209,42 +249,70 @@ export class OrdenFormAltaComponent implements OnInit {
   }
 
 
+
   crearOrdenDetalle() {
-    if (this.ordenNG.numOrdenCompra == '' && this.ordenNG.idProveedor !== '') {
-      console.log('entro a crear codigo de orden')
-      this.ordenNG.numOrdenCompra = this.ordenNG.idProveedor + '-' + this.generarCodigoAlfanumerico(3);
-      console.log(this.ordenNG.numOrdenCompra)
-    }
-    if (this.ordenNG.numOrdenCompra !== '' && this.ordenNG.idProveedor !== '') {
-      this.campoModificable = false; //hace q el proveedor no se pueda modificar
-      console.log('entro a crear el detalle')
-      const producto = this.productosServicio.getProductoBySKU(this.codProductoOrden);
-      if (producto.precio !== null && this.cantProducto !== null) {
-        const index = this.ordenDetalle.findIndex(detalle => detalle.codSKU === this.codProductoOrden);
-        if (index !== -1) {
-          this.ordenDetalle[index].cantidad = Number(this.ordenDetalle[index].cantidad) + Number(this.cantProducto);
-          this.ordenDetalle[index].montoDetalle! += producto.precio * this.cantProducto;
-        } else {
-          const detalleProducto: ProductosCantidad = {
-            codSKU: this.codProductoOrden,
-            nombreProducto: producto.nombre,
-            cantidad: this.cantProducto,
-            montoDetalle: (producto.precio * this.cantProducto)
+    if (this.codigoOrden !== null && this.codProveedor !== null) {
+      this.campoModificable = false; // hace que el proveedor no se pueda modificar
+      console.log('entro a crear el detalle');
+      if (this.codProductoOrden) {
+        this.productosBackServicio.getProductoById(this.codProductoOrden).subscribe(prod => {
+          const producto = prod;
+
+          const index = this.ordenDetalleDTO.findIndex(detalle => detalle.idProducto === this.codProductoOrden);
+          if (this.cantProducto) {
+
+
+            const detalleDTO: OrdenDetalleCreateDTO = {
+              idProducto: this.codProductoOrden,
+              cantOrdenDetalle: this.cantProducto,
+              precioUniOrdenDetalle: producto.precioProducto,
+
+              codSKU: producto.skuProducto,
+              montoDetalle: producto.precioProducto * this.cantProducto,
+              nombreProducto: producto.nombreProducto
+            };
+
+            if (index !== -1) {
+              const detalleExistente = this.ordenDetalleDTO[index];
+              if (detalleExistente.cantOrdenDetalle && detalleExistente.montoDetalle && this.cantProducto && detalleDTO.montoDetalle) {
+                // Si el producto ya existe en los detalles, actualiza la cantidad y el monto
+                detalleExistente.cantOrdenDetalle += this.cantProducto;
+                detalleExistente.montoDetalle += detalleDTO.montoDetalle;
+              } else {
+                console.error('El detalle de orden en la posición index es nulo.');
+                // Puedes manejar esta situación de alguna manera, por ejemplo, mostrando un mensaje de error.
+              }
+            } else {
+              // Si el producto no existe en los detalles, agrégalo
+              this.ordenDetalleDTO.push(detalleDTO);
+            }
+            console.log(this.ordenDetalleDTO)
           }
-          this.ordenDetalle.push(detalleProducto);
-        }
-        this.codProductoOrden = '';
-        this.cantProducto = null;
+          // Aquí puedes hacer algo con el detalleDTO si es necesario, como enviarlo a un servicio.
+
+          this.codProductoOrden = null;
+          this.cantProducto = null;
+        });
       }
     }
   }
 
 
+
+
   calcularSubtotal(): number {
-    return this.ordenDetalle.reduce((total, od) => total + (od.montoDetalle || 0), 0);
+    return this.ordenDetalleDTO.reduce((total, od) => total + (od.montoDetalle || 0), 0);
   }
-  eliminarDetalle(codSKU: string) {
-    this.ordenDetalle = this.ordenDetalle.filter(detalle => detalle.codSKU !== codSKU);
+
+  eliminarDetalle(idProducto: any) {
+    const index = this.ordenDetalleDTO.findIndex(detalle => detalle.idProducto === idProducto);
+    if (index !== -1) {
+      this.ordenDetalleDTO.splice(index, 1);
+      console.log(`Detalle con idProducto ${idProducto} eliminado.`);
+    } else {
+      console.warn(`No se encontró un detalle con idProducto ${idProducto}.`);
+      // Puedes manejar esta situación de alguna manera, por ejemplo, mostrando un mensaje de advertencia.
+    }
   }
 
 
@@ -258,6 +326,22 @@ export class OrdenFormAltaComponent implements OnInit {
     }
     return codigo;
   };
+
+  onProveedorChange() {
+    if (this.codProveedor) {
+      this.proveedoresBackServicio.getProveedorFormDTO(this.codProveedor).subscribe(data => {
+        this.logoProveedorSeleccionado = data.logoProveedor;
+      })
+    }
+  }
+
+  generarCodOrden() {
+    if (this.codProveedor) {
+      this.ordenesBackServicio.getCodigoOrden(this.codProveedor).subscribe(num => {
+        this.codigoOrden = num;
+      })
+    }
+  }
 
 
 }

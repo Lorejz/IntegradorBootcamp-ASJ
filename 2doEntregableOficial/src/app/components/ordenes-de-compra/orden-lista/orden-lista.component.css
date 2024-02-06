@@ -4,7 +4,8 @@ table {
     margin-top: 10px;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 7px;
@@ -17,4 +18,8 @@ th {
 .cancelada-row {
     text-decoration: line-through;
     background-color: #f2f2f2;
-  }
+}
+
+.fila-cancelada {
+    background-color: #f2f2f2;
+}

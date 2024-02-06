@@ -10,6 +10,8 @@ import { OrdenFormAltaComponent } from './components/ordenes-de-compra/orden-for
 import { AltaRubroComponent } from './components/proveedores/alta-rubro/alta-rubro.component';
 import { DetalleProductoComponent } from './components/productos/detalle-producto/detalle-producto.component';
 import { AltaCategoriaComponent } from './components/productos/alta-categoria/alta-categoria.component';
+import { DetalleOrdenComponent } from './components/ordenes-de-compra/detalle-orden/detalle-orden.component';
+import { DetalleProveedorComponent } from './components/proveedores/detalle-proveedor/detalle-proveedor.component';
 
 const routes: Routes = [
   { path: 'home',
@@ -24,7 +26,8 @@ const routes: Routes = [
       { path: '', component: ListaComponent },
       { path: 'alta-proveedor', component: FormAltaComponent },
       { path: 'alta-rubros', component: AltaRubroComponent },
-      { path: 'modificar-proveedor/:id', component: FormAltaComponent } 
+      { path: 'modificar-proveedor/:id', component: FormAltaComponent },
+      { path: 'detalle-proveedor/:id',component: DetalleProveedorComponent }
     ]
     },
   { path: 'productos',
@@ -40,7 +43,8 @@ const routes: Routes = [
     children: [
       { path: '', component: OrdenListaComponent },
       { path: 'crear-orden-de-compra', component: OrdenFormAltaComponent },
-      { path: 'modificar-orden-de-compra/:numOrdenCompra', component: OrdenFormAltaComponent }
+      { path: 'modificar-orden-de-compra/:numOrdenCompra', component: OrdenFormAltaComponent },
+      { path: 'detalle-orden/:id', component: DetalleOrdenComponent }
     ]
   }
 

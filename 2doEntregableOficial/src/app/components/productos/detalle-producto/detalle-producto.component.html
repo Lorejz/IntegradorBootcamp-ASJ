@@ -12,17 +12,28 @@
     <div class="row mt-4">
         <div class="col-lg-6">
             <h3 class="text-center">{{ producto.nombreProducto }}</h3>
-            <img src="{{ producto.imagenProducto }}" alt="{{ producto.nombreProducto }}" class="img-fluid rounded" />
+            <div class="border rounded p-3 mb-3">
+                <img src="{{ producto.imagenProducto }}" alt="{{ producto.nombreProducto }}" class="img-fluid rounded" />
+            </div>
         </div>
         <div class="col-lg-6">
-            <h3>Informacion del producto: </h3>
-            <p><strong>SKU:</strong> {{ producto.skuProducto }}</p>
-            <p><strong>Categoría:</strong> {{ categoria.nombreCategoria }}</p>
-            <p><strong>Proveedor:</strong> {{ proveedor.razonSocialProveedor }}</p>
-            <p><strong>Precio:</strong> ARS {{ producto.precioProducto}}</p>
-            <br>
-            <h4>Descripción del Producto</h4>
-            <p class="lead">{{ producto.descProducto }}</p>
+            <h4 class="card-title">Información:</h4>
+            <div class="card mt-2">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>SKU:</strong> {{ producto.skuProducto }}</li>
+                        <li class="list-group-item"><strong>Categoría:</strong> {{ categoria.nombreCategoria }}</li>
+                        <li class="list-group-item"><strong>Proveedor:</strong> {{ proveedor.razonSocialProveedor }}</li>
+                        <li class="list-group-item"><strong>Precio:</strong> ARS {{ producto.precioProducto}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4 class="card-title">Descripción del Producto</h4>
+                    <p class="card-text lead">{{ producto.descProducto }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -36,6 +36,12 @@ export class ProductosBackService {
     return this.http.get(this.URL_API_PRODUCTOS + "/categorias/" + idCategoria)
   }
 
+    //GET PRODUCTOS by PROVEEDOR
+    public getProductosByProveedor(idProveedor: number): Observable<any> {
+      return this.http.get(this.URL_API_PRODUCTOS + "/proveedor/" + idProveedor)
+    }
+
+
   //DELETE PRODUCTO
   public deleteProducto(id: number): Observable<any> {
     return this.http.delete(this.URL_API_PRODUCTOS + "/" + id);

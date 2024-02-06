@@ -52,9 +52,14 @@ export class ProveedoresBackService {
 
   URL_API_RUBROS = "http://localhost:8080/rubros";
 
-  //GET ALL RUBROS
+  //GET ALL RUBROS activos
   public getRubros() : Observable<any> {
     return this.http.get(this.URL_API_RUBROS)
+  }
+
+  //GET ALL RUBROS ACTIVOS Y BAJAS
+  public getRubrosAll() : Observable<any> {
+    return this.http.get(this.URL_API_RUBROS+"/todos")
   }
 
   //POST RUBRO
@@ -69,6 +74,11 @@ export class ProveedoresBackService {
   //PUT RUBRO
   public modificarRubro (id : number, rubro : any) : Observable<any> {
     return this.http.put(this.URL_API_RUBROS+"/"+id,rubro,{ observe:'response', responseType:'text' })
+  }
+
+  //ALTA RUBRO
+  public altaRubro( id : number ) : Observable<any>{
+    return this.http.put(this.URL_API_RUBROS+"/alta/"+id,null,{ observe:'response', responseType:'text' })
   }
 
   URL_API_CONDICIONESIVA = "http://localhost:8080/condicionesIva";

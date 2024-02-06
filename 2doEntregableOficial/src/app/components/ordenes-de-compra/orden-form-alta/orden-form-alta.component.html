@@ -32,26 +32,35 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-4">
-                <!--                 <label class="form-label">Cod. Orden</label>
+                <label class="form-label"> <strong>N° Orden</strong></label>
                 <input type="text" class="form-control" name="codigoOrd" [(ngModel)]="codigoOrden" readonly required>
-                <br> -->
-                <label class="form-label">Proveedor</label>
-                <select class="form-select" name="codProvOrd" aria-label="razonSocial" [(ngModel)]="ordenNG.idProveedor"
-                    (change)="buscarProductosProveedor()" [attr.disabled]="!campoModificable" required>
-                    <option *ngFor="let p of proveedores" [value]="p.id">{{ p.razonSocial }}</option>
+                <small class="text-black">El codigo se generara una vez seleccionado el proveedor.</small>
+                <br>
+                <label class="form-label"><strong>Proveedor</strong></label>
+                <select class="form-select" name="codProvOrd" aria-label="razonSocial" [(ngModel)]="codProveedor"
+                    (change)="buscarProductosProveedor()" (change)="onProveedorChange()" (change)="generarCodOrden()"
+                    [attr.disabled]="!campoModificable" required>
+                    <option *ngFor="let p of proveedoresDTO" [value]="p.idProveedor">{{ p.razonSocialProveedor }}
+                    </option>
                 </select>
                 <br>
-                <label class="form-label">Información de Recepción</label>
-                <br>
-                <textarea class="form-control" name="descripcionOrd" cols="52" rows="3" [(ngModel)]="ordenNG.descripcionOrden"></textarea>
+                <div class="text-center ">
+                    <img *ngIf="logoProveedorSeleccionado" [src]="logoProveedorSeleccionado" alt="Logo del proveedor">
+                </div>
             </div>
             <div class="col-4">
-                <label class="form-label">Fecha de Emision</label>
-                <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="ordenNG.fechaEmision" required>
+                <label class="form-label"><strong>Fecha de Emisión</strong></label>
+                <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="ordenNG.fechaEmision"
+                    (change)="actualizarFechaEmision()" required>
                 <br>
-                <label class="form-label">Fecha de Entrega Esperada</label>
-                <input type="date" class="form-control" name="fechaEntregaEspOrd" [(ngModel)]="ordenNG.fechaEntregaEsperada"
-                    required>
+                <label class="form-label"><strong>Fecha de Entrega Esperada</strong></label>
+                <input type="date" class="form-control" name="fechaEntregaEspOrd"
+                    [(ngModel)]="ordenNG.fechaEntregaEsperada" [min]="fechaEmisionSeleccionada" required>
+                <br>
+                <label class="form-label"><strong>Información Adicional</strong></label>
+                <br>
+                <textarea class="form-control" name="descripcionOrd" cols="52" rows="3"
+                    [(ngModel)]="ordenNG.descripcionOrden"></textarea>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -62,18 +71,20 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-4">
-                <label class="form-label">Productos del Proveedor</label>
+                <label class="form-label"><strong>Productos del Proveedor</strong></label>
                 <select class="form-select" name="codProductoOrd" aria-label="razonSocial"
                     [(ngModel)]="codProductoOrden" required>
-                    <option *ngFor="let pp of productosProveedor" [value]="pp.codSKUProducto">{{ pp.nombre }}</option>
+                    <option *ngFor="let pp of ProductosProvDTO" [value]="pp.idProducto">{{ pp.nombreProducto }}</option>
                 </select>
                 <br>
             </div>
-            <div class="col-4">
-                <label class="form-label">Cantidad</label>
-                <input type="text" class="form-control" name="cantProductoOrd" [(ngModel)]="cantProducto" required>
-                <br>
-                <button type="button" class="btn btn-dark " (click)="crearOrdenDetalle()">Agregar</button>
+            <div class="col-3">
+                <label class="form-label"><strong>Cantidad</strong></label>
+                <input type="number" class="form-control" name="cantProductoOrd" [(ngModel)]="cantProducto" required
+                    min="1">
+            </div>
+            <div class="col-1 mt-3 pt-3">
+                <button type="button" class="btn btn-outline-primary" (click)="crearOrdenDetalle()">Agregar</button>
             </div>
             <div class="row justify-content-center ">
                 <div class="col-8">
@@ -88,47 +99,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let od of ordenDetalle">
+                            <tr *ngFor="let od of ordenDetalleDTO">
                                 <td>{{ od.codSKU }}</td>
                                 <td>{{ od.nombreProducto }}</td>
-                                <td>{{ od.cantidad }}</td>
+                                <td>{{ od.cantOrdenDetalle }}</td>
                                 <td>ARS {{ od.montoDetalle }}</td>
-                                <td class="text-center "><button class="btn btn-danger" (click)="eliminarDetalle(od.codSKU)"><i class="bi bi-x-circle"></i></button></td>
+                                <td class="text-center "><button class="btn btn-danger"
+                                        (click)="eliminarDetalle(od.idProducto)"><i class="bi bi-x-circle"></i></button>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="3"></td>
-                                <td><strong>Subtotal:</strong> ARS {{ calcularSubtotal() }}</td>
+                                <td><strong>Total:</strong> ARS {{ calcularSubtotal().toFixed(2) }}</td>
                                 <td></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-8 ">
-                    <hr>
-                    <h4>Direcccion Entrega de la Orden de Compra</h4>
-                </div>
-            </div>
-            <div class="row justify-content-center ">
-                <div class="col-4">
-                    <label class="form-label">Calle</label>
-                    <input type="text" class="form-control" name="calleDirec" [(ngModel)]="ordenNG.direccion.calle" required>
-                    <br>
-                    <label class="form-label">Cod. Postal</label>
-                    <input type="text" class="form-control" name="codPostalDirec" [(ngModel)]="ordenNG.direccion.codPostal"
-                        required>
-                </div>
-                <div class="col-4">
-                    <label class="form-label">Numero</label>
-                    <input type="text" class="form-control" name="numeroDirec" [(ngModel)]="ordenNG.direccion.numero" required>
-                    <br>
-                </div>
-            </div>
-            <div *ngIf="estadoFormAlta" class="col-11 text-center mt-3 ">
+            <div *ngIf="estadoFormAlta" class="col-11 text-center mt-4 ">
                 <button type="submit" class="btn btn-success">Crear Orden de Compra</button>
             </div>
-            <div *ngIf="estadoFormModificar" class="col-11 text-center mt-3 ">
+            <div *ngIf="estadoFormModificar" class="col-11 text-center mt-4 ">
                 <button type="submit" class="btn btn-warning ">Modificar Orden de Compra</button>
             </div>
         </div>

@@ -23,8 +23,9 @@ export class AltaRubroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.proveedoresBackServicio.getRubros().subscribe( data => {
+    this.proveedoresBackServicio.getRubrosAll().subscribe( data => {
       this.rubros = data;
+      console.log(this.rubros);
     })
     this.newRubro.nombreRubro = "";
   }
@@ -137,6 +138,59 @@ export class AltaRubroComponent implements OnInit {
         }
       });
   }
+
+
+  darAltaRubro(idRubro: number): void {
+    Swal.fire({
+      title: 'Dar de alta Rubro',
+      text: '¿Estás seguro de que deseas dar de alta este Rubro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, dar de alta',
+      cancelButtonText: 'No, cancelar',
+      confirmButtonColor: '#dc3545', // Cambia el color del botón de confirmación según tu preferencia
+      cancelButtonColor: '#6c757d', // Cambia el color del botón de cancelación según tu preferencia
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.proveedoresBackServicio.altaRubro(idRubro).subscribe(
+            (msj) => {
+              console.log(msj);
+            },
+            (error) => {
+              console.error(error);
+              Swal.fire({
+                title: 'Error',
+                text: `Hubo un error al activar el rubro: ${error}`,
+                icon: 'error',
+              });
+            },
+            () => {
+              // Este bloque se ejecutará después de que se complete la operación, ya sea con éxito o con error.
+              this.proveedoresBackServicio.getRubrosAll().subscribe((data) => {
+                this.rubros = data;
+                console.log(this.rubros);
+              });
+              this.ngOnInit();
+            }
+          );
+        }
+      });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

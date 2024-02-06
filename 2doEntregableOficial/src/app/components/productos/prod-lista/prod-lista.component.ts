@@ -32,9 +32,10 @@ export class ProdListaComponent implements OnInit {
   //------------
 
 ngOnInit(): void {
-  this.productosBackService.getProductosActivos().subscribe( data => {
+/*   this.productosBackService.getProductosActivos().subscribe( data => {
     this.productosDTO = data;
-  })
+  }) */
+  this.onFiltroChange();
   this.productosBackService.buscarCategorias().subscribe( data => {
     this.categorias = data;
   })
@@ -110,8 +111,8 @@ darDeAltaProducto(idProducto: any): void {
         this.productosBackService.getProductosActivos().subscribe((productos) => {
           this.productosDTO = productos;
           this.filtro = "Activos";
+          this.onFiltroChange();
         });
-        this.ngOnInit();
         swalWithBootstrapButtons.fire({
           title: 'Producto dado de alta',
           text: 'El producto ha sido dado de alta correctamente.',

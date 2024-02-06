@@ -27,35 +27,21 @@
         <div class="row justify-content-center">
             <div class="col-4">
                 <label class="form-label">Codigo *</label>
-                <input type="text" class="form-control" name="codigoProveedor" [(ngModel)]="proveedorCreateDTO.codigoProveedor" required
-                pattern="^[a-zA-Z]{4}-[a-zA-Z0-9]*$">
-<!--                 <small *ngIf="miForm.submitted && miForm.controls['codigoProveedor'].hasError('pattern')"
-                class="text-danger">Se debe respetar la nomenclatura ej: PROV-23
-                </small>
-                <small class="text-danger" *ngIf="miForm.controls['codigoProveedor'].hasError('required') && (miForm.controls['codigoProveedor'].touched || miForm.submitted)">
-                    El código es requerido.
-                </small> -->
+                <input type="text" class="form-control" name="codigoProveedor" [(ngModel)]="proveedorCreateDTO.codigoProveedor" required pattern="^[a-zA-Z]{4}-[a-zA-Z0-9]*$">
+                <small *ngIf="miForm.submitted && !miForm.controls['codigoProveedor'].valid" class="text-danger">codigo es requerido y con su patron.</small>
                 <br>
                 <label class="form-label">Razon Social *</label>
                 <input type="text" class="form-control" name="razonSocialProveedor" [(ngModel)]="proveedorCreateDTO.razonSocialProveedor" required>
-                <small *ngIf="miForm.submitted && !miForm.controls['razonSocialProveedor'].valid" class="text-danger">Razon Social es requerido..</small>
+                <small *ngIf="miForm.submitted && !miForm.controls['razonSocialProveedor'].valid" class="text-danger">Razon Social es requerido.</small>
                 <br>
                 <label class="form-label">Rubro *</label>
                 <select class="form-select" name="idRubro" aria-label="rubro" [(ngModel)]="proveedorCreateDTO.idRubro" required>
                     <option *ngFor="let rubro of rubros" [value]="rubro.idRubro">{{ rubro.nombreRubro }}</option>
                 </select>
-<!--                 <small class="text-danger" *ngIf="miForm.controls['idRubro'].hasError('required') && (miForm.controls['idRubro'].touched || miForm.submitted)">
-                    Rubro es requerido.
-                </small> -->
+                <small *ngIf="miForm.submitted && !miForm.controls['idRubro'].valid" class="text-danger">Rubro es requerido.</small>
                 <br>
                 <label class="form-label">Telefono</label>
                 <input type="text" class="form-control" name="telefonoProveedor" [(ngModel)]="proveedorCreateDTO.telefonoProveedor" required pattern="^\+?[0-9]{1,20}$">
-<!--                 <small *ngIf="miForm.submitted && miForm.controls['telefonoProveedor'].hasError('pattern')"
-                class="text-danger">Debe tener menos de 20 numeros.
-                </small>
-                <small class="text-danger" *ngIf="miForm.controls['telefonoProveedor'].hasError('required') && (miForm.controls['telefonoProveedor'].touched || miForm.submitted)">
-                    Telefono es requerido
-                </small> -->
                 <br>
                 <label class="form-label">CUIT</label>
                 <input type="text" class="form-control" name="cuitProveedor" [(ngModel)]="proveedorCreateDTO.cuitProveedor" required>

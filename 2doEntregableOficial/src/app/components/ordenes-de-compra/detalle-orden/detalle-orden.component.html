@@ -1,0 +1,66 @@
+<!-- orden.component.html -->
+<div class="container mt-4" *ngIf="orden">
+    <div class="row text-center">
+        <div class="col-12">
+            <h2>Detalle de Orden de Compra</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-primary m-1 " routerLink="/ordenes-de-compra"><i
+                    class="bi bi-arrow-bar-left"></i>Volver</button>
+        </div>
+        <hr class="mt-2 ">
+    </div>
+    <!-- Información de la Orden -->
+    <div class="card mb-4 mt-3">
+        <div class="card-header" [ngClass]="{'bg-success': orden.nombreEstado === 'Activa', 'bg-danger': orden.nombreEstado === 'Cancelada'}">
+            <h5>Orden de Compra #{{ orden.numeroOrden }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <p><strong>Fecha de Emisión:</strong> {{ orden.fechaEmisionOrden }}</p>
+                    <p><strong>Fecha de Entrega Esperada:</strong> {{ orden.fechaEntregaOrden }}</p>
+                    <p><strong>Estado:</strong> {{ orden.nombreEstado }}</p>
+                    <p><strong>Informacion Adicional:</strong></p>
+                    <p>{{ orden.infoOrden }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Proveedor:</strong> {{ orden.razonSocialProveedor }}</p>
+                    <p><strong>Total:</strong> ARS {{ orden.montoTotalOrden.toFixed(2) }}</p>
+                </div>
+                <div class="col-3 text-center ">
+                    <img src="{{orden.logoProveedor}}" alt="" height="150px">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalles de la Orden -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Detalles de la Orden</h5>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Monto Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let detalle of orden.ordenDetalles">
+                        <td>{{ detalle.nombreProducto }}</td>
+                        <td>{{ detalle.cantidad }}</td>
+                        <td>ARS {{ detalle.precioUnitario.toFixed(2) }}</td>
+                        <td>ARS {{ detalle.subTotal.toFixed(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
