@@ -12,15 +12,16 @@ import { DetalleProductoComponent } from './components/productos/detalle-product
 import { AltaCategoriaComponent } from './components/productos/alta-categoria/alta-categoria.component';
 import { DetalleOrdenComponent } from './components/ordenes-de-compra/detalle-orden/detalle-orden.component';
 import { DetalleProveedorComponent } from './components/proveedores/detalle-proveedor/detalle-proveedor.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
-  { path: 'home',
+  { path: '',
     children: [
-      { path: '', component: HomeComponent },
+      { path: '', component: LoginComponent },
+      { path: 'login', component: LoginComponent },
       { path: 'home', component: HomeComponent } 
     ]
     },
-  
   { path: 'proveedores',
     children: [
       { path: '', component: ListaComponent },

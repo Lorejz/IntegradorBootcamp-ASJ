@@ -10,8 +10,15 @@
     <form #miFormCab="ngForm" (ngSubmit)="crearOrdenCabecera(miFormCab)">
         <div class="row justify-content-center">
             <div class="col-8 ">
-                <button type="button" class="btn btn-primary m-1 " routerLink="/ordenes-de-compra"><i
-                        class="bi bi-arrow-bar-left"></i>Volver</button>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light p-3 rounded">
+                        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/ordenes-de-compra">Ordenes de Compra</a></li>
+                        <li class="breadcrumb-item">Crear Orden de Compra</li>
+                    </ol>
+                </nav>
+                <!-- <button type="button" class="btn btn-primary m-1 " routerLink="/ordenes-de-compra"><i
+                        class="bi bi-arrow-bar-left"></i>Volver</button> -->
                 <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -43,6 +50,9 @@
                     <option *ngFor="let p of proveedoresDTO" [value]="p.idProveedor">{{ p.razonSocialProveedor }}
                     </option>
                 </select>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['codProvOrd'].valid" class="text-danger">
+                    Seleccionar un proveedor es requerido.
+                </small>
                 <br>
                 <div class="text-center ">
                     <img *ngIf="logoProveedorSeleccionado" [src]="logoProveedorSeleccionado" alt="Logo del proveedor">
@@ -52,15 +62,26 @@
                 <label class="form-label"><strong>Fecha de Emisión</strong></label>
                 <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="ordenNG.fechaEmision"
                     (change)="actualizarFechaEmision()" required>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['fechaEmisionOrd'].valid" class="text-danger">
+                    Fecha de emision es requerido.
+                </small>
                 <br>
-                <label class="form-label"><strong>Fecha de Entrega Esperada</strong></label>
+                <label class="form-label"><strong>Fecha de Entrega</strong></label>
                 <input type="date" class="form-control" name="fechaEntregaEspOrd"
                     [(ngModel)]="ordenNG.fechaEntregaEsperada" [min]="fechaEmisionSeleccionada" required>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['fechaEntregaEspOrd'].valid"
+                    class="text-danger">
+                    Fecha de entrega es requerido.
+                </small>
                 <br>
                 <label class="form-label"><strong>Información Adicional</strong></label>
                 <br>
                 <textarea class="form-control" name="descripcionOrd" cols="52" rows="3"
-                    [(ngModel)]="ordenNG.descripcionOrden"></textarea>
+                    [(ngModel)]="ordenNG.descripcionOrden" required></textarea>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['descripcionOrd'].valid"
+                    class="text-danger">
+                    Informacion adicinal es requerido.
+                </small>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -74,7 +95,7 @@
                 <label class="form-label"><strong>Productos del Proveedor</strong></label>
                 <select class="form-select" name="codProductoOrd" aria-label="razonSocial"
                     [(ngModel)]="codProductoOrden" required>
-                    <option *ngFor="let pp of ProductosProvDTO" [value]="pp.idProducto">{{ pp.nombreProducto }}</option>
+                    <option *ngFor="let pp of ProductosProvDTO" [value]="pp.idProducto">{{ pp.nombreProducto }} - ARS {{ pp.precioProducto }}</option>
                 </select>
                 <br>
             </div>

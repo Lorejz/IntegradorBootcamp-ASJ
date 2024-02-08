@@ -1,48 +1,55 @@
 <div class="container mt-4">
-  <div class="row mt-5 ">
-
-  </div>
-  <div class="row mt-5 ">
-
-  </div>
-  <div class="row mt-5 ">
-
-  </div>
-  <div class="row mt-5">
-      <!-- Card de Proveedores -->
-      <div class="col-md-4 mb-4">
-          <div class="card">
-              <img src="https://img.freepik.com/vector-premium/firmar-documentos-confirmar-recepcion-pedido_80802-797.jpg" class="card-img-top" alt="Imagen de Proveedores">
-              <div class="card-body">
-                  <h5 class="card-title">Módulo de Proveedores</h5>
-                  <p class="card-text">Administra y gestiona tus proveedores de manera eficiente.</p>
-                  <a href="#" class="btn btn-primary">Ir al Módulo</a>
-              </div>
-          </div>
-      </div>
-      
-      <!-- Card de Productos -->
-      <div class="col-md-4 mb-4">
-          <div class="card">
-              <img src="https://static.vecteezy.com/system/resources/previews/010/312/811/non_2x/set-of-parcels-in-cardboard-boxes-square-carton-cartoon-flat-illustration-warehouse-and-mail-item-delivery-of-cargo-packed-goods-brown-objects-vector.jpg" class="card-img-top" alt="Imagen de Productos">
-              <div class="card-body">
-                  <h5 class="card-title">Módulo de Productos</h5>
-                  <p class="card-text">Gestiona tus productos de forma organizada y eficaz.</p>
-                  <a href="#" class="btn btn-primary">Ir al Módulo</a>
-              </div>
-          </div>
-      </div>
-      
-      <!-- Card de Ordenes de Compra -->
-      <div class="col-md-4 mb-4">
-          <div class="card">
-              <img src="https://img.freepik.com/vector-premium/orden-recibida-ilustracion-vector-plano-icono-estado-pedido-compra-movil-cliente-personaje-dibujos-animados-femenino-que-recibe-pedido-paga-al-mensajero-tarjeta_241107-1214.jpg" class="card-img-top" alt="Imagen de Ordenes de Compra">
-              <div class="card-body">
-                  <h5 class="card-title">Módulo de Ordenes de Compra</h5>
-                  <p class="card-text">Administra tus ordenes de compra de manera eficiente.</p>
-                  <a href="#" class="btn btn-primary">Ir al Módulo</a>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="row mt-5 text-center ">
+        <h1>Sistema de Gestion de Compras</h1>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="https://img.freepik.com/vector-premium/firmar-documentos-confirmar-recepcion-pedido_80802-797.jpg"
+                    class="card-img-top" alt="Imagen de Proveedores" width="300px" height="300px">
+                    <hr>
+                <div class="card-body text-center ">
+                    <h5 class="card-title">Módulo de Proveedores</h5>
+                    <p class="card-text">Administra y gestiona tus proveedores de manera eficiente.</p>
+                    <a routerLink="/proveedores" class="btn btn-danger  ">Ir al Módulo</a>
+                </div>
+            </div>
+            <div class="card bg-success-subtle text-center mt-2">
+                <h5 class="ps-3">Proveedores Activos</h5>
+                <h5 class=" ps-3">{{ cantProveedores }}</h5>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center ">
+                <img src="https://static.vecteezy.com/system/resources/previews/010/312/811/non_2x/set-of-parcels-in-cardboard-boxes-square-carton-cartoon-flat-illustration-warehouse-and-mail-item-delivery-of-cargo-packed-goods-brown-objects-vector.jpg"
+                    class="card-img-top" alt="Imagen de Productos"width="300px" height="300px" >
+                    <hr>
+                <div class="card-body">
+                    <h5 class="card-title">Módulo de Productos</h5>
+                    <p class="card-text">Gestiona tus productos de forma organizada y eficaz.</p>
+                    <a routerLink="/productos" class="btn btn-warning ">Ir al Módulo</a>
+                </div>
+            </div>
+            <div class="card bg-success-subtle text-center mt-2">
+                <h5 class="ps-3">Productos Activos</h5>
+                <h5 class=" ps-3">{{ cantProductos }}</h5>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center ">
+                <img src="https://www.salesnayak.com/Design2021/assets/Salesnayak/salesinvoice.png"
+                    class="card-img-top" alt="Imagen de Ordenes de Compra" width="300px" height="300px">
+                    <hr>
+                <div class="card-body">
+                    <h4 class="card-title">Módulo de Ordenes de Compra</h4>
+                    <p class="card-text">Administra tus ordenes de compra de manera eficiente.</p>
+                    <a routerLink="/ordenes-de-compra" class="btn btn-primary">Ir al Módulo</a>
+                </div>
+            </div>  
+            <div class="card bg-success-subtle text-center mt-2">
+                <h5 class="ps-3">Ordenes Activas</h5>
+                <h5 class=" ps-3">{{ cantOrdenes }}</h5>
+            </div>
+        </div>
+    </div>
 </div>

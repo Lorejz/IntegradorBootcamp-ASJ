@@ -100,40 +100,40 @@ export class ProdFormAltaComponent implements OnInit {
         });
         this.alertaWarning = true;
       } else {
-        const  newProductoDTO : ProductosFormDTO = {
-          skuProducto : miForm.value.skuProducto ,
-          idCategoria :  miForm.value.idCategoria ,
-          idProveedor :  miForm.value.idProveedor ,
-          nombreProducto : miForm.value.nombreProducto ,
-          imagenProducto : miForm.value.imagenProducto ,
-          descProducto : miForm.value.descProducto ,
-          precioProducto :  miForm.value.precioProducto 
-        }
-/*         const proveedor: Proveedores = this.proveedoresServicio.getProveedorByid(miForm.value.razonProvProd);
-        const producto: Productos = {
-          idProveedor: miForm.value.razonProvProd,
-          razonSocialProveedor: proveedor.razonSocial,
-          codSKUProducto: miForm.value.codSKUProd,
-          categoria: miForm.value.categoriaProd,
-          nombre: miForm.value.nombreProd,
-          descripcion: miForm.value.descProd,
-          precio: miForm.value.precioProd,
-          imagen: miForm.value.imagenProd,
-        } */
-        console.log(newProductoDTO);
-        this.productosBackService.createProducto(newProductoDTO).subscribe( msj => {
-          console.log(msj);
-        })
-        Swal.fire({
-          title: "Producto Cargado",
-          text: "El producto se ha cargado correctamente.",
-          icon: "success"
+        this.productosBackService.verificarSKUProducto(miForm.value.skuProducto).subscribe( estado => {
+          if(estado){
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "¡El SKU Producto que ingresaste ya existe!"
+            });
+          }else{
+            const  newProductoDTO : ProductosFormDTO = {
+              skuProducto : miForm.value.skuProducto ,
+              idCategoria :  miForm.value.idCategoria ,
+              idProveedor :  miForm.value.idProveedor ,
+              nombreProducto : miForm.value.nombreProducto ,
+              imagenProducto : miForm.value.imagenProducto ,
+              descProducto : miForm.value.descProducto ,
+              precioProducto :  miForm.value.precioProducto 
+            }
+            console.log(newProductoDTO);
+            this.productosBackService.createProducto(newProductoDTO).subscribe( msj => {
+              console.log(msj);
+            })
+            Swal.fire({
+              title: "Producto Cargado",
+              text: "El producto se ha cargado correctamente.",
+              icon: "success"
+            });
+            this.router.navigate(['/proveedores']);
+            miForm.reset();
+            this.alertaSucces = true;
+            this.alertaWarning = false;
+            this.router.navigate(['/productos']);
+          }
         });
-        this.router.navigate(['/proveedores']);        
-        miForm.reset();
-        this.alertaSucces = true;
-        this.alertaWarning = false;
-        this.router.navigate(['/productos']);
+        
       }
     }
     if(this.estadoFormModificar == true && this.estadoFormAlta == false ){ // ESTADO MODIFICACION
@@ -173,13 +173,24 @@ export class ProdFormAltaComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             // Lógica para modificar el producto
-            this.productosBackService.actualizarProducto(this.id, modProductoDTO).subscribe((msj) => {
-              console.log(msj);
+            this.productosBackService.actualizarProducto(this.id, modProductoDTO).subscribe({
+              next: (msj) => {
+                console.log(msj);
+                this.router.navigate(['/proveedores']);
+                this.router.navigate(['/productos']);
+                miForm.reset();
+                this.alertaSucces = true;
+                this.alertaWarning = false;
+              },
+              error: (error) => {
+                console.error('Error al actualizar el producto:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'El codigo SKU que tratas de ingresar ya existe!',
+                });
+              }
             });
-            miForm.reset();
-            this.alertaSucces = true;
-            this.alertaWarning = false;
-            this.router.navigate(['/productos']);
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
               title: "Cancelado",

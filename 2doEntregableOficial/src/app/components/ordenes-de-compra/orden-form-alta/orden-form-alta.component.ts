@@ -14,6 +14,7 @@ import { ProductosListDTO } from '../../../interfaces/ProductosListDTO';
 import { OrdenesBackService } from '../../../services/ordenes-back.service';
 import { OrdenDetalleCreateDTO } from '../../../interfaces/OrdenDetalleCreateDTO';
 import { OrdenCreateDTO } from '../../../interfaces/OrdenCreateDTO';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-orden-form-alta',
@@ -87,6 +88,7 @@ export class OrdenFormAltaComponent implements OnInit {
 
 
   fechaEmisionSeleccionada: Date | null = null;
+  
   actualizarFechaEmision() {
     this.fechaEmisionSeleccionada = this.ordenNG.fechaEmision;
   }
@@ -129,11 +131,21 @@ export class OrdenFormAltaComponent implements OnInit {
       ) {
         this.alertaWarning = true
         console.log('error falta algun campo')
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Verifique que los campos esten completos!"
+        });
         return;
       }
       if (this.ordenDetalleDTO.length === 0) {
         this.alertaWarningDetalle = true;
         console.log('Error: Debe agregar al menos un producto al detalle');
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Debe agregar al menos un producto a la orden!"
+        });
         return; // Detener la ejecución si hay un error
       }
       if (
@@ -149,41 +161,33 @@ export class OrdenFormAltaComponent implements OnInit {
           numeroOrden : this.codigoOrden,
           montoTotalOrden : this.calcularSubtotal()
         }
-/*         const orden: OrdenCompra = {
-          numOrdenCompra: this.ordenNG.numOrdenCompra,
-          fechaEmision: miFormCab.value.fechaEmisionOrd,
-          fechaEntregaEsperada: miFormCab.value.fechaEntregaEspOrd,
-          direccion: {
-            calle: miFormCab.value.calleDirec,
-            numero: miFormCab.value.numeroDirec,
-            codPostal: miFormCab.value.codPostalDirec,
-          },
-          idProveedor: miFormCab.value.codProvOrd,
-          razonSocialProveedor: proveedor.razonSocial,
-          productos: this.ordenDetalle,
-          descripcionOrden: miFormCab.value.descripcionOrd,
-          estado: "Pendiente",
-          montoTotal: this.calcularSubtotal(),
-        } */
-        let confirmacion = confirm('¿Desea crear la Orden de Compra?')
-        if (confirmacion) {
-          //this.ordenesServicio.addOrden(orden);
-          console.log(ordenDTO);
-          console.log(this.ordenDetalleDTO);
-          this.ordenesBackServicio.crearOrden(ordenDTO,this.ordenDetalleDTO).subscribe( msj => {
-            console.log(msj);
-          } )
-          miFormCab.reset()
-          this.alertaSucces = true;
-          this.alertaWarning = false;
-          this.alertaWarningDetalle = false;
-          this.campoModificable = true; //volver a hacer modificable el proveedor por si qiere cargar otra orden
-          //this.ordenDetalle = [];
-          //hacer logica para que lo devuelva al listado de las ordenes de compra
-          this.router.navigate(['/ordenes-de-compra']);
-        }
+        Swal.fire({
+          title: '¿Desea crear la Orden de Compra?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, crear',
+          cancelButtonText: 'Cancelar',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.ordenesBackServicio.crearOrden(ordenDTO, this.ordenDetalleDTO).subscribe(msj => {
+              console.log(msj);
+              miFormCab.reset();
+              this.alertaSucces = true;
+              this.alertaWarning = false;
+              this.alertaWarningDetalle = false;
+              this.campoModificable = true;
+              this.router.navigate(['/proveedores']);
+              this.router.navigate(['/ordenes-de-compra']);
+            });
+          }
+        });
       } else {
         console.log('falta algun campo')
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Verifique que los campos esten completos!"
+        });
         this.alertaWarning = true;
       }
     }

@@ -34,26 +34,29 @@ export class OrdenesBackService {
 
   //get activas listado
   public getListOrdenesActivas(): Observable<any> {
-    return this.http.get(this.URL_API_ORDENES+"/activas")
+    return this.http.get(this.URL_API_ORDENES + "/activas")
   }
 
-    //get canceladas listado
-    public getListOrdenesCanceladas(): Observable<any> {
-      return this.http.get(this.URL_API_ORDENES+"/canceladas")
-    }
+  //get canceladas listado
+  public getListOrdenesCanceladas(): Observable<any> {
+    return this.http.get(this.URL_API_ORDENES + "/canceladas")
+  }
 
 
   //Get por Id para detalle
-  public getOrdenById (idOrden : number) : Observable<any> {
-    return this.http.get(this.URL_API_ORDENES+"/"+idOrden)
+  public getOrdenById(idOrden: number): Observable<any> {
+    return this.http.get(this.URL_API_ORDENES + "/" + idOrden)
   }
 
   //cancelar
-  public cancelOrden(idOrden : number) : Observable<any> {
-    return this.http.put(this.URL_API_ORDENES+"/"+idOrden,null,{ observe: 'response', responseType: 'text' })
+  public cancelOrden(idOrden: number): Observable<any> {
+    return this.http.put(this.URL_API_ORDENES + "/" + idOrden, null, { observe: 'response', responseType: 'text' })
   }
 
-
+  //get COUNT ordenes activos
+  public cantidadOrdenesvActivos() : Observable<any> {
+    return this.http.get(this.URL_API_ORDENES+"/cant")
+  }  
 
 
 }

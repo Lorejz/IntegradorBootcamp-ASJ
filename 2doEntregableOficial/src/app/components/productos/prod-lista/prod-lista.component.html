@@ -1,4 +1,4 @@
-<div class="class row text-center pt-2 ">
+<div class="class row text-center mt-2 ">
     <div class="col-12">
         <h1 class="mt-2">
             Listado de Productos
@@ -6,12 +6,22 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-3 pt-1 ">
-        <label for="">Filtrar por Nombre de Producto: </label>
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light p-3 rounded">
+                <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item">Productos</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2 pt-1 ">
+        <label for="">Filtrar por Nombre: </label>
         <input class="form-control me-2 w-80  " type="search" placeholder="ej: 'Cama infantil' " aria-label="Search"
             [(ngModel)]="filtroNombreProducto">
     </div>
-    <div class="col-3 pt-1 ">
+    <div class="col-2 pt-1 ">
         <label for="">Filtrar por Activo/Baja </label>
         <select class="form-select w-75 " aria-label="Rubro" name="categoriaProd" [(ngModel)]="filtro"
             (change)="onFiltroChange()">
@@ -22,9 +32,17 @@
     </div>
     <div class="col-3 pt-1">
         <label class="">Filtrar por Categoria</label>
-        <select class="form-select" name="idRubro" aria-label="rubro" [(ngModel)]="categoriaFiltro"
+        <select class="form-select w-75  " name="idRubro" aria-label="rubro" [(ngModel)]="categoriaFiltro"
             (change)="onFiltroCategoriaChange()">
             <option *ngFor="let c of categorias" [value]="c.idCategoria">{{ c.nombreCategoria }}</option>
+        </select>
+    </div>
+    <div class="col-2 pt-1 ">
+        <label class="">Filtrar por Precio</label>
+        <select class="form-select "  aria-label="rubro" [(ngModel)]="precioFiltro"
+            (change)="onPrecioFiltroChange()">
+            <option value="Menor a Mayor">Menor a Mayor</option>
+            <option value="Mayor a Menor">Mayor a Menor</option>
         </select>
     </div>
     <div class="col-3 text-end pt-4    ">

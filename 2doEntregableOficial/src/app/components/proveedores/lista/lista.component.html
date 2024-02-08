@@ -1,17 +1,29 @@
-<div class="class row text-center pt-2 ">
+
+<div class="class row text-center mt-2">
     <div class="col-12">
-        <h1 class="mt-2">
+        <h1>
             Listado de Proveedores
         </h1>
     </div>
 </div>
 <div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light p-3 rounded">
+                <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item">Proveedores</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
     <div class="col-4 pt-1 ">
         <label for="">Filtrar por Razon Social: </label>
-        <input class="form-control me-2" type="search" placeholder="ej: 'Walmart' " aria-label="Search">
+        <input class="form-control me-2" type="search" placeholder="ej: 'Walmart' " aria-label="Search"
+            [(ngModel)]="filtroRazonSocial">
     </div>
     <div class="col-3 pt-1 ">
-        <label for="">Filtrar por Activo/Baja </label>
+        <label for="">Filtrar por Activo/Eliminados </label>
         <select class="form-select" aria-label="Rubro" name="categoriaProd" [(ngModel)]="rubroFiltro"
             (change)="onFiltroChange()">
             <option value="Activos">Activos</option>
@@ -36,32 +48,35 @@
         <table>
             <thead>
                 <tr>
-                    <th>Codigo</th>
                     <th>Logo</th>
+                    <th>Codigo</th>
                     <th>Razon Social</th>
-                    <th>Sitio Web / Email / Telefono</th>
-                    <th>Nombre Contacto</th>
-                    <th>Apellido Contacto</th>
+                    <th>Pais - Provincia</th>
+                    <th>Info Contacto</th>
+                    <th>+Info</th>
+                    <!-- <th>Apellido Contacto</th> -->
                     <th>Accion</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let p of proveedoresDTO"
+                <tr *ngFor="let p of proveedoresDTO| filtroRazonSocialProveedor: filtroRazonSocial"
                     [ngStyle]="{'background-color': p.habilitadoProveedor ? 'inherit' : '#ccc'}">
-                    <td>{{ p.codigoProveedor }}</td>
                     <td>
                         <img src="{{ p.logoProveedor }}" alt="error no carga" width="70px" height="70px">
                     </td>
+                    <td>{{ p.codigoProveedor }}</td>
                     <td>{{ p.razonSocialProveedor }}</td>
-                    <td>
-                        {{ p.sitioWebProveedor }}
-                        <br>
-                        {{ p.emailProveedor }}
-                        <br>
-                        {{ p.telefonoProveedor }}
+                    <td>{{ p.nombrePais }} - {{ p.nombreProvincia }}</td>
+                    <td>{{ p.nombreContacto }} {{ p.apellidoContacto }}</td>
+                    <td class="text-center">
+                        <span ngbTooltip="
+                            {{ p.sitioWebProveedor }} /
+                            {{ p.emailProveedor }} /
+                            {{ p.telefonoProveedor }}">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
                     </td>
-                    <td>{{ p.nombreContacto }}</td>
-                    <td>{{ p.apellidoContacto }}</td>
+                    <!-- <td>{{ p.apellidoContacto }}</td> -->
                     <td class="text-center ">
                         <button class="btn btn-primary m-1" (click)="verDetalleProveedor(p.idProveedor)"><i
                                 class="bi bi-eye"></i>
@@ -74,6 +89,9 @@
                             (click)="darDeAltaProveedor(p.idProveedor!)"><i class="bi bi-upload"></i></button>
                     </td>
                 </tr>
+                <p *ngIf="esFilaVacia()">
+                    <!-- {{ proveedoresDTO[0].mensaje }} -->
+                <p>
             </tbody>
         </table>
     </div>

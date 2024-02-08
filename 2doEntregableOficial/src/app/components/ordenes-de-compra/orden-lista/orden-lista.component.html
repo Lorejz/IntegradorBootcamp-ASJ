@@ -7,7 +7,17 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-3  pt-1">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light p-3 rounded">
+                <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item">Ordenes de Compra</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
         <label for="">Filtrar por Activas/Canceladas </label>
         <select class="form-select w-75 " aria-label="Rubro" name="categoriaProd" [(ngModel)]="filtro"
             (change)="onFiltroChange()">

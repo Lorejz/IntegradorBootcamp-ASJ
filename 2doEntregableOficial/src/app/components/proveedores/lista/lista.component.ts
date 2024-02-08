@@ -4,8 +4,10 @@ import { Proveedores } from '../../../interfaces/Proveedores';
 import { Router } from '@angular/router';
 import { ProveedoresListDTO } from '../../../interfaces/ProveedoresListDTO';
 import { ProveedoresBackService } from '../../../services/proveedores-back.service';
-import Swal from 'sweetalert2'
+import { NgModule } from '@angular/core';
+import { FiltroRazonSocialProveedorPipe } from '../../../pipes/filtro-razon-social-proveedor.pipe';
 
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -15,29 +17,41 @@ import Swal from 'sweetalert2'
 })
 export class ListaComponent implements OnInit {
 
-  constructor ( 
-    public proveedoresService : ProveedoresService,
+  constructor(
+    public proveedoresService: ProveedoresService,
     public router: Router,
-    private proveedoresBackServicio : ProveedoresBackService
-    ){}
+    private proveedoresBackServicio: ProveedoresBackService
+  ) { }
 
-  proveedores : Proveedores[] = [];
+  proveedores: Proveedores[] = [];
 
   //- Cosas Nuevas -//
-  proveedoresDTO : ProveedoresListDTO[] = [];
-  rubros : any[] = [];
+  proveedoresDTO: ProveedoresListDTO[] = [];
+  rubros: any[] = [];
 
-  rubroFiltro : string = "Activos";
+  rubroFiltro: string = "Activos";
+
+  filtroRazonSocial: string = '';
+
   //----------------//
   ngOnInit(): void {
-
-    this.proveedoresBackServicio.getProveedoresListActivos().subscribe( proves => {
+    this.getProveedoresActivosAndRubros();
+/*     this.proveedoresBackServicio.getProveedoresListActivos().subscribe(proves => {
       this.proveedoresDTO = proves;
     })
-    
-    this.proveedoresBackServicio.getRubros().subscribe( rubros => {
+
+    this.proveedoresBackServicio.getRubros().subscribe(rubros => {
       this.rubros = rubros;
-    })
+    }) */
+  }
+
+  public getProveedoresActivosAndRubros()  {
+    this.proveedoresBackServicio.getProveedoresListActivos().subscribe(proves => {
+      this.proveedoresDTO = proves;
+    });
+    this.proveedoresBackServicio.getRubros().subscribe(rubros => {
+      this.rubros = rubros;
+    });
   }
 
   eliminarProveedor(id: number): void {
@@ -48,7 +62,6 @@ export class ListaComponent implements OnInit {
       },
       buttonsStyling: false
     });
-  
     swalWithBootstrapButtons
       .fire({
         title: '¿Desea eliminar el Proveedor?',
@@ -63,11 +76,10 @@ export class ListaComponent implements OnInit {
         if (result.isConfirmed) {
           this.proveedoresBackServicio.darBajaProveedor(id).subscribe((msj) => {
             console.log(msj);
-          });
-          this.proveedoresBackServicio.getProveedoresListActivos().subscribe((proves) => {
-            this.proveedoresDTO = proves;
+            this.getProveedoresActivosAndRubros();
           });
           this.ngOnInit();
+          this.rubroFiltro = "Activos"
           swalWithBootstrapButtons.fire({
             title: 'Eliminado',
             text: 'El proveedor ha sido eliminado.',
@@ -84,10 +96,10 @@ export class ListaComponent implements OnInit {
   }
 
 
-  modificarProveedor(id:any){
-    this.router.navigate(['/proveedores/modificar-proveedor/',id])
+  modificarProveedor(id: any) {
+    this.router.navigate(['/proveedores/modificar-proveedor/', id])
   }
-  
+
   onFiltroChange() {
     if (this.rubroFiltro === "Activos") {
       this.proveedoresBackServicio.getProveedoresListActivos().subscribe(provesAct => {
@@ -103,10 +115,8 @@ export class ListaComponent implements OnInit {
       // Aquí combina los proveedores activos y eliminados
       this.proveedoresBackServicio.getProveedoresListActivos().subscribe(provesAct => {
         const proveedoresActivos = provesAct;
-  
         this.proveedoresBackServicio.getProveedoresListEliminados().subscribe(provesEli => {
           const proveedoresEliminados = provesEli;
-  
           // Combina los arrays de activos y eliminados
           this.proveedoresDTO = proveedoresActivos.concat(proveedoresEliminados);
         });
@@ -122,7 +132,6 @@ export class ListaComponent implements OnInit {
       },
       buttonsStyling: false
     });
-    
     swalWithBootstrapButtons
       .fire({
         title: '¿Estás seguro?',
@@ -137,12 +146,10 @@ export class ListaComponent implements OnInit {
         if (result.isConfirmed) {
           this.proveedoresBackServicio.darAltaProveedor(idProveedor).subscribe((msj) => {
             console.log(msj);
-          });
-          this.proveedoresBackServicio.getProveedoresListActivos().subscribe((proves) => {
-            this.proveedoresDTO = proves;
+            this.getProveedoresActivosAndRubros();
           });
           this.ngOnInit();
-          this.rubroFiltro = "Activos"  
+          this.rubroFiltro = "Activos"
           swalWithBootstrapButtons.fire({
             title: 'Restaurado',
             text: 'El proveedor ha sido restaurado.',
@@ -157,10 +164,15 @@ export class ListaComponent implements OnInit {
         }
       });
 
-    }
+  }
 
-    verDetalleProveedor(idProveedor:any){
-      this.router.navigate(['/proveedores/detalle-proveedor/',idProveedor])
-    }
-    
+  verDetalleProveedor(idProveedor: any) {
+    this.router.navigate(['/proveedores/detalle-proveedor/', idProveedor])
+  }
+
+  esFilaVacia(): boolean {
+    return this.proveedoresDTO.length === 0 ||
+      (this.proveedoresDTO.length === 1 && 'mensaje' in this.proveedoresDTO[0]);
+  }
+
 }

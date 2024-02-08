@@ -1,15 +1,20 @@
-<div class="row text-center m-2">
+
+<div class="row text-center mt-2">
     <h2>
         Gestion Rubros
     </h2>
 </div>
-
-<div class="container ">
+<div class="container mt-2">
     <form #miForm="ngForm" (ngSubmit)="crearRubro(miForm)">
         <div class="row justify-content-center ">
             <div class="col-4 ">
-                <button type="button" class="btn btn-primary m-1 " routerLink="/proveedores"><i
-                        class="bi bi-arrow-bar-left"></i>Volver</button>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light p-3 rounded">
+                        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/proveedores">Proveedores</a></li>
+                        <li class="breadcrumb-item">Gestion Rubros</li>
+                    </ol>
+                </nav>
                 <hr>
                 <h3>
                     Alta Rubro

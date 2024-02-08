@@ -5,19 +5,57 @@
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
+
+    <div class="collapse navbar-collapse" id="navbarText" *ngIf="isAuthenticated()">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="proveedores">Proveedores</a>
+          <!-- <a class="nav-link" routerLink="proveedores" [ngClass]="{'active' : checkRouteContained('/proveedores') }">Proveedores</a> -->
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'active' : checkRouteContained('/proveedores') }" >
+              Proveedores
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/proveedores">Listado de Proveedores</a></li>
+              <li><a class="dropdown-item" routerLink="/proveedores/alta-proveedor">Dar de Alta Proveedor</a></li>
+              <li><a class="dropdown-item" routerLink="/proveedores/alta-rubros">Gestionar Rubros</a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="productos">Productos</a>
+          <!--  <a class="nav-link" routerLink="productos">Productos</a> -->
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'active' : checkRouteContained('/productos') }">
+              Productos
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/productos">Listado de Productos</a></li>
+              <li><a class="dropdown-item" routerLink="/productos/alta-producto">Dar de Alta Producto</a></li>
+              <li><a class="dropdown-item" routerLink="/productos/gestionar-categorias">Gestionar Categorias</a></li>
+            </ul>
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="ordenes-de-compra">Ordenes de Compra</a>
+          <!-- <a class="nav-link" routerLink="ordenes-de-compra">Ordenes de Compra</a> -->
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'active' : checkRouteContained('/ordenes-de-compra') }">
+              Ordenes de Compra
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/ordenes-de-compra">Listado de Ordenes de Compra</a></li>
+              <li><a class="dropdown-item" routerLink="/ordenes-de-compra/crear-orden-de-compra">Crear Orden de Compra</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="isAuthenticated()">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <button class="nav-link btn btn-outline-primary " (click)="logOut()">
+            <i class="bi bi-person-circle"></i> Cerrar Sesion
+          </button>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-

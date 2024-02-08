@@ -1,1 +1,74 @@
-<p>detalle-proveedor works!</p>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light p-3 rounded">
+                    <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/proveedores">Proveedores</a></li>
+                    <li class="breadcrumb-item">Detalle Proveedor</li>
+                </ol>
+            </nav>
+        </div>
+        <hr class="">
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ proveedor.logoProveedor }}" class="card-img-top" alt="Logo del Proveedor">
+                <div class="card-header">Datos Generales</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Razón Social:</strong> {{ proveedor.razonSocialProveedor }}</li>
+                    <li class="list-group-item"><strong>Código de Proveedor:</strong> {{ proveedor.codigoProveedor }}</li>
+                    <li class="list-group-item"><strong>Estado:</strong> {{ proveedor.estadoProveedor }}</li>
+                </ul>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">Domicilio del Proveedor</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>País:</strong> {{ proveedor.nombrePais }}</li>
+                        <li class="list-group-item"><strong>Ciudad:</strong> {{ proveedor.nombreProvincia }}</li>
+                        <li class="list-group-item"><strong>Localidad:</strong> {{ proveedor.localidadDireccion }}</li>
+                        <li class="list-group-item"><strong>Cod Postal:</strong> {{ proveedor.codPostalDireccion }}</li>
+                        <li class="list-group-item"><strong>Calle:</strong> {{ proveedor.calleDireccion }}</li>
+                        <li class="list-group-item"><strong>Numero:</strong> {{ proveedor.numDireccion }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Información del Proveedor</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Rubro:</strong> {{ proveedor.nombreRubro }}</li>
+                        <li class="list-group-item"><strong>Sitio Web:</strong> {{ proveedor.sitioWebProveedor }}</li>
+                        <li class="list-group-item"><strong>Teléfono:</strong> {{ proveedor.telefonoProveedor }}</li>
+                        <li class="list-group-item"><strong>Email:</strong> {{ proveedor.emailProveedor }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">Información Fiscal</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>CUIT:</strong> {{ proveedor.cuitProveedor }}</li>
+                        <li class="list-group-item"><strong>Condición IVA:</strong> {{ proveedor.nombreCondicionIva }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <div class="card-header">Información de Contacto</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Nombre de Contacto:</strong> {{ proveedor.nombreContacto }}</li>
+                        <li class="list-group-item"><strong>Apellido de Contacto:</strong> {{ proveedor.apellidoContacto }}</li>
+                        <li class="list-group-item"><strong>Teléfono de Contacto:</strong> {{ proveedor.telefonoContacto }}</li>
+                        <li class="list-group-item"><strong>Email de Contacto:</strong> {{ proveedor.emailContacto }}</li>
+                        <li class="list-group-item"><strong>Rol de Contacto:</strong> {{ proveedor.rolContacto }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

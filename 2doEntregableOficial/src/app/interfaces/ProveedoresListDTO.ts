@@ -13,5 +13,7 @@ export interface ProveedoresListDTO {
 
     nombreContacto : String,
     apellidoContacto : String,
-
+    
+    nombrePais : String,
+    nombreProvincia : String,
 }

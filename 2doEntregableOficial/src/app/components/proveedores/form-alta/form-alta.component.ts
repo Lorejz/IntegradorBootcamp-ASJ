@@ -18,8 +18,8 @@ export class FormAltaComponent implements OnInit {
     public proveedorServicio: ProveedoresService,
     public route: ActivatedRoute,
     public router: Router,
-    private proveedoresBackServicio : ProveedoresBackService
-    ) { }
+    private proveedoresBackServicio: ProveedoresBackService
+  ) { }
 
   id: any = '';
 
@@ -29,53 +29,55 @@ export class FormAltaComponent implements OnInit {
   estadoFormAlta: boolean = true;
   estadoFormModificar: boolean = false;
 
+  verEstadoCodigoProveedor?: boolean;
+
   //--Cosas nuevas--//
-    paises : any [] = [];
+  paises: any[] = [];
 
-    provincias : any[] = [];
+  provincias: any[] = [];
 
-    rubros : any[] = [];
+  rubros: any[] = [];
 
-    condicionesIva : any[] = [];
+  condicionesIva: any[] = [];
 
-    proveedorCreateDTO : ProveedoresCreateDTO = {
-      codigoProveedor : "",
-      idRubro : null,
-      idCondicionIva : null,
-      razonSocialProveedor : "",
-      sitioWebProveedor : "",
-      telefonoProveedor : "",
-      cuitProveedor : "",
-      logoProveedor : "",
-      emailProveedor : "",
-  
-      nombreContacto : "",
-      apellidoContacto : "",
-      telefonoContacto : "",
-      emailContacto : "",
-      rolContacto : "",
-  
-      idProvincia : null,
-      calleDireccion : "",
-      numDireccion : null,
-      codPostaDireccion : null,
-      localidadDireccion : "",
-      idPais : null
-    }
+  proveedorCreateDTO: ProveedoresCreateDTO = {
+    codigoProveedor: "",
+    idRubro: null,
+    idCondicionIva: null,
+    razonSocialProveedor: "",
+    sitioWebProveedor: "",
+    telefonoProveedor: "",
+    cuitProveedor: "",
+    logoProveedor: "",
+    emailProveedor: "",
+
+    nombreContacto: "",
+    apellidoContacto: "",
+    telefonoContacto: "",
+    emailContacto: "",
+    rolContacto: "",
+
+    idProvincia: null,
+    calleDireccion: "",
+    numDireccion: null,
+    codPostaDireccion: null,
+    localidadDireccion: "",
+    idPais: null
+  }
 
   //----------------//
 
   ngOnInit(): void {
 
-    this.proveedoresBackServicio.getPaises().subscribe( paises => {
+    this.proveedoresBackServicio.getPaises().subscribe(paises => {
       this.paises = paises;
     })
 
-    this.proveedoresBackServicio.getRubros().subscribe( rubros => {
+    this.proveedoresBackServicio.getRubros().subscribe(rubros => {
       this.rubros = rubros;
     })
 
-    this.proveedoresBackServicio.getCondicionesIva().subscribe( condiciones => {
+    this.proveedoresBackServicio.getCondicionesIva().subscribe(condiciones => {
       this.condicionesIva = condiciones;
     })
 
@@ -88,19 +90,19 @@ export class FormAltaComponent implements OnInit {
       this.estadoFormAlta = false; //al estar en false, no entra a la logica de creacion del submit de la funcion 'crearProveedor()'
       this.estadoFormModificar = true;
 
-      console.log('en el oninit, estado form alta-> '+this.estadoFormAlta + ', estado form mod-> '+this.estadoFormModificar)
+      console.log('en el oninit, estado form alta-> ' + this.estadoFormAlta + ', estado form mod-> ' + this.estadoFormModificar)
 
-      this.proveedoresBackServicio.getProveedorFormDTO(this.id).subscribe( provDTO => {
+      this.proveedoresBackServicio.getProveedorFormDTO(this.id).subscribe(provDTO => {
         this.proveedorCreateDTO = provDTO;
         if (this.proveedorCreateDTO.idPais) {
           const paisSeleccionado = this.paises.find(pais => pais.idPais === this.proveedorCreateDTO.idPais);
           if (paisSeleccionado) {
             this.proveedorCreateDTO.idPais = paisSeleccionado.idPais;
           }
-          if( this.proveedorCreateDTO.idPais != null ){
+          if (this.proveedorCreateDTO.idPais != null) {
             this.proveedoresBackServicio.getProvinciasByPais(this.proveedorCreateDTO.idPais).subscribe(provincias => {
               this.provincias = provincias;
-                  if (this.proveedorCreateDTO.idProvincia) {
+              if (this.proveedorCreateDTO.idProvincia) {
                 const provinciaSeleccionada = this.provincias.find(provincia => provincia.idProvincia === this.proveedorCreateDTO.idProvincia);
                 if (provinciaSeleccionada) {
                   this.proveedorCreateDTO.idProvincia = provinciaSeleccionada.idProvincia;
@@ -109,16 +111,16 @@ export class FormAltaComponent implements OnInit {
             });
           }
         }
-      });      
+      });
     } else {
       console.log('no hay id, es ALTA')
     }
   }
 
   crearProveedor(miForm: NgForm) {
-    console.log('despues de submit, estado form alta-> '+this.estadoFormAlta + ', estado form mod-> '+this.estadoFormModificar)
-    if (this.estadoFormAlta == true && this.estadoFormModificar == false ) { // estado ALTA miForm.value.razonSocialProv,
-      console.log('entro por if nuevo'+ 'estado form alta->'+this.estadoFormAlta + 'estado form mod->'+this.estadoFormModificar)
+    console.log('despues de submit, estado form alta-> ' + this.estadoFormAlta + ', estado form mod-> ' + this.estadoFormModificar)
+    if (this.estadoFormAlta == true && this.estadoFormModificar == false) { // estado ALTA miForm.value.razonSocialProv,
+      console.log('entro por if nuevo' + 'estado form alta->' + this.estadoFormAlta + 'estado form mod->' + this.estadoFormModificar)
       if (!miForm.valid) {
         this.alertaWarning = true;
         Swal.fire({
@@ -127,47 +129,66 @@ export class FormAltaComponent implements OnInit {
           text: "Verifica que la informacion sea válida!"
         });
       } else {
-        const proveedorDtoOut : ProveedoresCreateDTO = { 
-          codigoProveedor : miForm.value.codigoProveedor,
-          idRubro : miForm.value.idRubro,
-          idCondicionIva : miForm.value.idCondicionIva,
-          razonSocialProveedor : miForm.value.razonSocialProveedor,
-          sitioWebProveedor : miForm.value.sitioWebProveedor,
-          telefonoProveedor : miForm.value.telefonoProveedor,
-          cuitProveedor : miForm.value.cuitProveedor,
-          logoProveedor : miForm.value.logoProveedor,
-          emailProveedor : miForm.value.emailProveedor,
-
-          nombreContacto : miForm.value.nombreContacto,
-          apellidoContacto : miForm.value.apellidoContacto,
-          telefonoContacto : miForm.value.telefonoContacto,
-          emailContacto : miForm.value.emailContacto,
-          rolContacto : miForm.value.rolContacto,
-      
-          idProvincia : miForm.value.idProvincia,
-          calleDireccion : miForm.value.calleDireccion,
-          numDireccion : miForm.value.numDireccion,
-          codPostaDireccion : miForm.value.codPostaDireccion,
-          localidadDireccion :  miForm.value.localidadDireccion,
-          idPais : miForm.value.idPais
-        }
-        console.log(proveedorDtoOut);
-        this.proveedoresBackServicio.crearProveedor(proveedorDtoOut).subscribe( mensaje => {
-          console.log(mensaje);
-        })
-        miForm.reset();
-        this.alertaSucces = true;
-        this.alertaWarning = false;
-        Swal.fire({
-          title: "Proveedor Cargado",
-          text: "El proveedor se ha cargado correctamente.",
-          icon: "success"
+        this.proveedoresBackServicio.verificarCodigoProveedor(miForm.value.codigoProveedor).subscribe( estado =>{
+          if(estado){
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "¡El Código de proveedor que ingresaste ya existe!"
+            });
+          }else{
+            const proveedorDtoOut: ProveedoresCreateDTO = {
+              codigoProveedor: miForm.value.codigoProveedor,
+              idRubro: miForm.value.idRubro,
+              idCondicionIva: miForm.value.idCondicionIva,
+              razonSocialProveedor: miForm.value.razonSocialProveedor,
+              sitioWebProveedor: miForm.value.sitioWebProveedor,
+              telefonoProveedor: miForm.value.telefonoProveedor,
+              cuitProveedor: miForm.value.cuitProveedor,
+              logoProveedor: miForm.value.logoProveedor,
+              emailProveedor: miForm.value.emailProveedor,
+    
+              nombreContacto: miForm.value.nombreContacto,
+              apellidoContacto: miForm.value.apellidoContacto,
+              telefonoContacto: miForm.value.telefonoContacto,
+              emailContacto: miForm.value.emailContacto,
+              rolContacto: miForm.value.rolContacto,
+    
+              idProvincia: miForm.value.idProvincia,
+              calleDireccion: miForm.value.calleDireccion,
+              numDireccion: miForm.value.numDireccion,
+              codPostaDireccion: miForm.value.codPostaDireccion,
+              localidadDireccion: miForm.value.localidadDireccion,
+              idPais: miForm.value.idPais
+            }
+            this.proveedoresBackServicio.crearProveedor(proveedorDtoOut).subscribe({
+              next: (mensaje) => {
+                console.log(mensaje);
+                miForm.reset();
+                this.alertaSucces = true;
+                this.alertaWarning = false;
+                this.router.navigate(['/productos']);
+                this.router.navigate(['/proveedores']);
+                Swal.fire({
+                  title: 'Proveedor Cargado',
+                  text: 'El proveedor se ha cargado correctamente.',
+                  icon: 'success'
+                });
+              },
+              error: (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'La razon social o el codigo ya existen!', //va ser la razon social el error
+                });
+              }
+            });
+          }
         });
-        this.router.navigate(['/proveedores']);
       }
     }
-     if (this.estadoFormModificar == true && this.estadoFormAlta == false ){ // ESTADO MODIFICACION
-      console.log('entro if mod'+ 'estado form alta->'+this.estadoFormAlta + 'estado form mod->'+this.estadoFormModificar)
+    if (this.estadoFormModificar == true && this.estadoFormAlta == false) { // ESTADO MODIFICACION
+      console.log('entro if mod' + 'estado form alta->' + this.estadoFormAlta + 'estado form mod->' + this.estadoFormModificar)
       if (!miForm.valid) {
         this.alertaWarning = true;
         Swal.fire({
@@ -177,28 +198,28 @@ export class FormAltaComponent implements OnInit {
         });
       } else {
         const proveedorModDto: ProveedoresCreateDTO = {
-          codigoProveedor : miForm.value.codigoProveedor,
-          idRubro : miForm.value.idRubro,
-          idCondicionIva : miForm.value.idCondicionIva,
-          razonSocialProveedor : miForm.value.razonSocialProveedor,
-          sitioWebProveedor : miForm.value.sitioWebProveedor,
-          telefonoProveedor : miForm.value.telefonoProveedor,
-          cuitProveedor : miForm.value.cuitProveedor,
-          logoProveedor : miForm.value.logoProveedor,
-          emailProveedor : miForm.value.emailProveedor,
+          codigoProveedor: miForm.value.codigoProveedor,
+          idRubro: miForm.value.idRubro,
+          idCondicionIva: miForm.value.idCondicionIva,
+          razonSocialProveedor: miForm.value.razonSocialProveedor,
+          sitioWebProveedor: miForm.value.sitioWebProveedor,
+          telefonoProveedor: miForm.value.telefonoProveedor,
+          cuitProveedor: miForm.value.cuitProveedor,
+          logoProveedor: miForm.value.logoProveedor,
+          emailProveedor: miForm.value.emailProveedor,
 
-          nombreContacto : miForm.value.nombreContacto,
-          apellidoContacto : miForm.value.apellidoContacto,
-          telefonoContacto : miForm.value.telefonoContacto,
-          emailContacto : miForm.value.emailContacto,
-          rolContacto : miForm.value.rolContacto,
-      
-          idProvincia : miForm.value.idProvincia,
-          calleDireccion : miForm.value.calleDireccion,
-          numDireccion : miForm.value.numDireccion,
-          codPostaDireccion : miForm.value.codPostaDireccion,
-          localidadDireccion :  miForm.value.localidadDireccion,
-          idPais : miForm.value.idPais
+          nombreContacto: miForm.value.nombreContacto,
+          apellidoContacto: miForm.value.apellidoContacto,
+          telefonoContacto: miForm.value.telefonoContacto,
+          emailContacto: miForm.value.emailContacto,
+          rolContacto: miForm.value.rolContacto,
+
+          idProvincia: miForm.value.idProvincia,
+          calleDireccion: miForm.value.calleDireccion,
+          numDireccion: miForm.value.numDireccion,
+          codPostaDireccion: miForm.value.codPostaDireccion,
+          localidadDireccion: miForm.value.localidadDireccion,
+          idPais: miForm.value.idPais
         }
         const swalWithBootstrapButtons = Swal.mixin({
           customClass: {
@@ -218,13 +239,24 @@ export class FormAltaComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             // Lógica para modificar el proveedor
-            this.proveedoresBackServicio.modificarProveedor(this.id, proveedorModDto).subscribe((msj) => {
-              console.log(msj);
+            this.proveedoresBackServicio.modificarProveedor(this.id, proveedorModDto).subscribe({
+              next: (mensaje) => {
+                console.log(mensaje);
+                miForm.reset();
+                this.alertaSucces = true;
+                this.alertaWarning = false;
+                this.router.navigate(['/productos']);
+                this.router.navigate(['/proveedores']);
+              },
+              error: (error) => {
+                console.error('Error al modificar el proveedor:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'La razon social o el codigo ya existen!',
+                });
+              }
             });
-            miForm.reset();
-            this.alertaSucces = true;
-            this.alertaWarning = false;
-            this.router.navigate(['/proveedores']);
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
               title: "Cancelado",
@@ -238,12 +270,12 @@ export class FormAltaComponent implements OnInit {
   }
 
   onPaisChange(): void {
-    if (this.proveedorCreateDTO.idPais ) {
-        this.proveedoresBackServicio.getProvinciasByPais(this.proveedorCreateDTO.idPais).subscribe(provincias => {
-            this.provincias = provincias;
-        });
+    if (this.proveedorCreateDTO.idPais) {
+      this.proveedoresBackServicio.getProvinciasByPais(this.proveedorCreateDTO.idPais).subscribe(provincias => {
+        this.provincias = provincias;
+      });
     }
-}
+  }
 
 
 }

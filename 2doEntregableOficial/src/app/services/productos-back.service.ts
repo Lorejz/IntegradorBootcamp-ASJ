@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductosFormDTO } from '../interfaces/ProductosFormDTO';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -55,11 +57,33 @@ export class ProductosBackService {
   // POST
   public createProducto(prod: ProductosFormDTO): Observable<any> {
     return this.http.post(this.URL_API_PRODUCTOS, prod, { observe: 'response', responseType: 'text' })
+    .pipe(
+      catchError(error => {
+        console.error('Error al crear el producto:', error);
+        return throwError(error);
+      })
+    );
   }
 
-  //PUT
-  public actualizarProducto(id: number, prodDTO: ProductosFormDTO): Observable<any> {
-    return this.http.put(this.URL_API_PRODUCTOS + "/" + id, prodDTO, { observe: 'response', responseType: 'text' })
+    //get COUNT PRODUCTOS activos
+    public cantidadProdActivos() : Observable<any> {
+      return this.http.get(this.URL_API_PRODUCTOS+"/cant")
+    }
+
+//PUT
+public actualizarProducto(id: number, prodDTO: ProductosFormDTO): Observable<any> {
+  return this.http.put(this.URL_API_PRODUCTOS + "/" + id, prodDTO, { observe: 'response', responseType: 'text' })
+    .pipe(
+      catchError(error => {
+        console.error('Error al actualizar el producto:', error);
+        return throwError(error);
+      })
+    );
+}
+
+  //verificar sku
+  public verificarSKUProducto ( skuProducto : string ) : Observable<any> {
+    return this.http.get(this.URL_API_PRODUCTOS+"/verificar/"+skuProducto)
   }
 
 

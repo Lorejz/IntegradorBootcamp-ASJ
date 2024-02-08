@@ -21,6 +21,8 @@ import { DetalleProductoComponent } from './components/productos/detalle-product
 import { AltaCategoriaComponent } from './components/productos/alta-categoria/alta-categoria.component';
 import { DetalleOrdenComponent } from './components/ordenes-de-compra/detalle-orden/detalle-orden.component';
 import { DetalleProveedorComponent } from './components/proveedores/detalle-proveedor/detalle-proveedor.component';
+import { LoginComponent } from './components/login/login.component';
+import { FiltroRazonSocialProveedorPipe } from './pipes/filtro-razon-social-proveedor.pipe';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { DetalleProveedorComponent } from './components/proveedores/detalle-prov
     DetalleProductoComponent,
     AltaCategoriaComponent,
     DetalleOrdenComponent,
-    DetalleProveedorComponent
+    DetalleProveedorComponent,
+    LoginComponent,
+    FiltroRazonSocialProveedorPipe
   ],
   imports: [
     BrowserModule,

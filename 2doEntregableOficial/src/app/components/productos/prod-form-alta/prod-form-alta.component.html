@@ -8,14 +8,23 @@
 
 <div class="container">
     <form #miForm="ngForm" (ngSubmit)="crearProducto(miForm)">
-        <div class="row justify-content-center   ">
+        <div class="row justify-content-center">
             <div class="col-8 ">
-                <button type="button" class="btn btn-primary m-1 " routerLink="/productos"><i class="bi bi-arrow-bar-left"></i>Volver</button>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light p-3 rounded">
+                        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/productos">Productos</a></li>
+                        <li *ngIf="estadoFormAlta" class="breadcrumb-item">Alta Producto</li>
+                        <li *ngIf="estadoFormModificar" class="breadcrumb-item">Modificar Producto
+                        </li>
+                    </ol>
+                </nav>
+                <!-- <button type="button" class="btn btn-primary m-1 " routerLink="/productos"><i class="bi bi-arrow-bar-left"></i>Volver</button> -->
                 <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                
+
                 <div *ngIf="alertaSucces" class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Excelente!</strong> La informacion se ha cargado correctamente.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -26,32 +35,62 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-4">
-                <label class="form-label">Codigo SKU   *</label>
-                <input type="text" class="form-control" name="skuProducto" [(ngModel)]="productoDTO.skuProducto" required minlength="5">
+                <label class="form-label"><strong>Codigo SKU *</strong></label>
+                <input type="text" class="form-control" name="skuProducto" [(ngModel)]="productoDTO.skuProducto"
+                    required pattern="^SKU-[a-zA-Z0-9]*$" placeholder="SKU-EJEMPLO1">
+                <small *ngIf="miForm.submitted && !miForm.controls['skuProducto'].valid" class="text-danger">
+                    Codigo SKU es requerido y con su respectivo formato.
+                </small>
                 <br>
-                <label class="form-label">Nombre del Producto</label>
-                <input type="text" class="form-control" name="nombreProducto" [(ngModel)]="productoDTO.nombreProducto" required pattern=".{5,}">
+                <label class="form-label"><strong>Nombre *</strong></label>
+                <input type="text" class="form-control" name="nombreProducto" [(ngModel)]="productoDTO.nombreProducto"
+                    required placeholder="Nombre de Ejemplo">
+                <small *ngIf="miForm.submitted && !miForm.controls['nombreProducto'].valid" class="text-danger">
+                    Nombre es requerido.
+                </small>
                 <br>
-                <label class="form-label">Categoria</label>
-                <select class="form-select" name="idCategoria" aria-label="rubro" [(ngModel)]="productoDTO.idCategoria">
+                <label class="form-label"><strong>Categoria *</strong></label>
+                <select class="form-select" name="idCategoria" aria-label="rubro" [(ngModel)]="productoDTO.idCategoria"
+                    required>
                     <option *ngFor="let c of categorias" [value]="c.idCategoria">{{ c.nombreCategoria }}</option>
                 </select>
+                <small *ngIf="miForm.submitted && !miForm.controls['idCategoria'].valid" class="text-danger">
+                    Categoria es requerido.
+                </small>
                 <br>
-                <label class="form-label">Descripcion</label>
+                <label class="form-label"><strong>Descripcion *</strong></label>
                 <br>
-                <textarea class="form-control" name="descProducto" cols="53" rows="5" [(ngModel)]="productoDTO.descProducto" required></textarea>
+                <textarea class="form-control" name="descProducto" cols="53" rows="5"
+                    [(ngModel)]="productoDTO.descProducto" required placeholder="Descripcion de ejemplo"></textarea>
+                <small *ngIf="miForm.submitted && !miForm.controls['descProducto'].valid" class="text-danger">
+                    Categoria es requerido.
+                </small>
             </div>
             <div class="col-4">
-                <label class="form-label">Precio</label>
-                <input type="text" class="form-control" name="precioProducto" [(ngModel)]="productoDTO.precioProducto" required pattern="^\d+(\.\d{1,2})?$">
+                <label class="form-label"><strong>Precio *</strong></label>
+                <input type="text" class="form-control" name="precioProducto" [(ngModel)]="productoDTO.precioProducto"
+                    required pattern="^\d+(\.\d{1,2})?$" placeholder="15999.99">
+                <small *ngIf="miForm.submitted && !miForm.controls['precioProducto'].valid" class="text-danger">
+                    Precio es requerido y con su respectivo formato.
+                </small>
                 <br>
-                <label class="form-label">URL Imagen</label>
-                <input type="text" class="form-control" name="imagenProducto" [(ngModel)]="productoDTO.imagenProducto" required>
+                <label class="form-label"><strong>URL Imagen *</strong></label>
+                <input type="text" class="form-control" name="imagenProducto" [(ngModel)]="productoDTO.imagenProducto"
+                    required pattern=".*\.(jpg|jpeg|png|gif|bmp|svg|webp)$" placeholder="imagenProductoEjemplo.png">
+                <small *ngIf="miForm.submitted && !miForm.controls['imagenProducto'].valid" class="text-danger">
+                    URL Imagen es requerido y con su respectivo formato.
+                </small>
                 <br>
-                <label for="suplier-iva" class="form-label">Proveedor</label>
-                <select class="form-select" name="idProveedor" aria-label="razonSocial" [(ngModel)]="productoDTO.idProveedor" (change)="onProveedorSeleccionado(productoDTO.idProveedor)" required>
-                    <option *ngFor="let p of proveedoresDTO" [value]="p.idProveedor">{{ p.razonSocialProveedor }}</option>
+                <label for="suplier-iva" class="form-label"><strong>Proveedor *</strong></label>
+                <select class="form-select" name="idProveedor" aria-label="razonSocial"
+                    [(ngModel)]="productoDTO.idProveedor" (change)="onProveedorSeleccionado(productoDTO.idProveedor)"
+                    required>
+                    <option *ngFor="let p of proveedoresDTO" [value]="p.idProveedor">{{ p.razonSocialProveedor }}
+                    </option>
                 </select>
+                <small *ngIf="miForm.submitted && !miForm.controls['idProveedor'].valid" class="text-danger">
+                    Proveedor es requerido.
+                </small>
                 <br>
                 <div class="text-center ">
                     <img *ngIf="logoProveedorSeleccionado" [src]="logoProveedorSeleccionado" alt="Logo del proveedor">
