@@ -1,0 +1,84 @@
+<!-- Div de Listado proveedores -->
+<div class="row pt-2">
+    <div class="col-12 text-center ">
+        <h1 class="mt-2">
+            Listado de Ordenes de Compra
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-light p-3 rounded">
+                <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                <li class="breadcrumb-item">Ordenes de Compra</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <label for="">Filtrar por Activas/Canceladas </label>
+        <select class="form-select w-75 " aria-label="Rubro" name="categoriaProd" [(ngModel)]="filtro"
+            (change)="onFiltroChange()">
+            <option value="Activas">Activas</option>
+            <option value="Canceladas">Canceladas</option>
+            <option value="Todas">Todas</option>
+        </select>
+    </div>
+    <div class="col-3 pt-1 ">
+
+    </div>
+    <div class="col-4">
+
+    </div>
+    <div class="col-2 text-end pt-4">
+        <button class="btn btn-success btn-sm m-1 p-2" routerLink="./crear-orden-de-compra">
+            Crear Orden de Compra
+        </button>
+    </div>
+</div>
+
+<!-- Div de la tabla con proveedores -->
+<div class="row">
+    <div class="col-12 p-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>N° Orden</th>
+                    <th>Razon Social</th>
+                    <th>Fecha Emision</th>
+                    <th>Fecha Entrega</th>
+                    <th>Monto Total</th>
+                    <th>Estado</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let o of ordenesList" [ngClass]="obtenerClaseFila(o.nombreEstado)">
+                    <td>{{ o.numeroOrden }}</td>
+                    <td>{{ o.razonSocialProveedor }}</td>
+                    <td>{{ o.fechaEmisionOrden }}</td>
+                    <td>{{ o.fechaEntregaOrden }}</td>
+                    <td>ARS {{ o.montoTotalOrden }}</td>
+                    <td class="text-center">{{o.nombreEstado}}</td>
+                    <td class="text-center">
+                        <ng-container *ngIf="o.nombreEstado !== 'Cancelada'; else ocultarBoton">
+                            <Button class="btn btn-primary  m-1" (click)="verDetalleOrden(o.idOrden)" ><i
+                                class="bi bi-eye"></i></Button>
+                            <button class="btn btn-danger" (click)="cancelarOrden(o.idOrden)">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
+                        </ng-container>
+                        <ng-template #ocultarBoton>
+                            <Button class="btn btn-primary  m-1" (click)="verDetalleOrden(o.idOrden)" ><i
+                                class="bi bi-eye"></i></Button>
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

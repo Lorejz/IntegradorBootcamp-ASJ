@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark-subtle ">Iniciar Sesión</div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="assets/pose.png" alt="Logo" class="img-fluid">
+                        <hr>
+                    </div>
+                    <form (ngSubmit)="login()">
+                        <div class="form-group">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" [(ngModel)]="usuario" name="usuario">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="contrasenia">Contraseña</label>
+                            <input type="password" class="form-control" id="contrasenia" [(ngModel)]="contrasenia"
+                                name="contrasenia">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Iniciar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

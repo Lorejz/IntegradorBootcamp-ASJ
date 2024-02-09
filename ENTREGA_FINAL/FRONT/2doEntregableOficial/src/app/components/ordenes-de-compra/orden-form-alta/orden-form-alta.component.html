@@ -1,0 +1,149 @@
+<div *ngIf="estadoFormAlta" class="row m-2 text-center mt-2 ">
+    <h1>Crear Orden de Compra</h1>
+</div>
+
+<div *ngIf="estadoFormModificar" class="row m-2 text-center mt-2 ">
+    <h1>Modificar Orden de Compra</h1>
+</div>
+
+<div class="container pb-5">
+    <form #miFormCab="ngForm" (ngSubmit)="crearOrdenCabecera(miFormCab)">
+        <div class="row justify-content-center">
+            <div class="col-8 ">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light p-3 rounded">
+                        <li class="breadcrumb-item"><a routerLink="/home">Home</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/ordenes-de-compra">Ordenes de Compra</a></li>
+                        <li class="breadcrumb-item">Crear Orden de Compra</li>
+                    </ol>
+                </nav>
+                <!-- <button type="button" class="btn btn-primary m-1 " routerLink="/ordenes-de-compra"><i
+                        class="bi bi-arrow-bar-left"></i>Volver</button> -->
+                <div *ngIf="alertaWarning" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Advertencia !</strong> Deberias verificar que los campos fueron completados correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div *ngIf="alertaWarningDetalle" class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Advertencia !</strong> Deberias agregar al menos un producto a la orden de compra!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div *ngIf="alertaSucces" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Excelente!</strong> La informacion se ha cargado correctamente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <hr>
+                <h4>Informacion de la Orden de Compra</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label class="form-label"> <strong>N° Orden</strong></label>
+                <input type="text" class="form-control" name="codigoOrd" [(ngModel)]="codigoOrden" readonly required>
+                <small class="text-black">El codigo se generara una vez seleccionado el proveedor.</small>
+                <br>
+                <label class="form-label"><strong>Proveedor</strong></label>
+                <select class="form-select" name="codProvOrd" aria-label="razonSocial" [(ngModel)]="codProveedor"
+                    (change)="buscarProductosProveedor()" (change)="onProveedorChange()" (change)="generarCodOrden()"
+                    [attr.disabled]="!campoModificable" required>
+                    <option *ngFor="let p of proveedoresDTO" [value]="p.idProveedor">{{ p.razonSocialProveedor }}
+                    </option>
+                </select>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['codProvOrd'].valid" class="text-danger">
+                    Seleccionar un proveedor es requerido.
+                </small>
+                <br>
+                <div class="text-center ">
+                    <img *ngIf="logoProveedorSeleccionado" [src]="logoProveedorSeleccionado" alt="Logo del proveedor">
+                </div>
+            </div>
+            <div class="col-4">
+                <label class="form-label"><strong>Fecha de Emisión</strong></label>
+                <input type="date" class="form-control" name="fechaEmisionOrd" [(ngModel)]="ordenNG.fechaEmision"
+                    (change)="actualizarFechaEmision()" required>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['fechaEmisionOrd'].valid" class="text-danger">
+                    Fecha de emision es requerido.
+                </small>
+                <br>
+                <label class="form-label"><strong>Fecha de Entrega</strong></label>
+                <input type="date" class="form-control" name="fechaEntregaEspOrd"
+                    [(ngModel)]="ordenNG.fechaEntregaEsperada" [min]="fechaEmisionSeleccionada" required>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['fechaEntregaEspOrd'].valid"
+                    class="text-danger">
+                    Fecha de entrega es requerido.
+                </small>
+                <br>
+                <label class="form-label"><strong>Información Adicional</strong></label>
+                <br>
+                <textarea class="form-control" name="descripcionOrd" cols="52" rows="3"
+                    [(ngModel)]="ordenNG.descripcionOrden" required></textarea>
+                <small *ngIf="miFormCab.submitted && !miFormCab.controls['descripcionOrd'].valid"
+                    class="text-danger">
+                    Informacion adicinal es requerido.
+                </small>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8 ">
+                <hr>
+                <h4>Productos de la Orden de Compra</h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <label class="form-label"><strong>Productos del Proveedor</strong></label>
+                <select class="form-select" name="codProductoOrd" aria-label="razonSocial"
+                    [(ngModel)]="codProductoOrden" required>
+                    <option *ngFor="let pp of ProductosProvDTO" [value]="pp.idProducto">{{ pp.nombreProducto }} - ARS {{ pp.precioProducto }}</option>
+                </select>
+                <br>
+            </div>
+            <div class="col-3">
+                <label class="form-label"><strong>Cantidad</strong></label>
+                <input type="number" class="form-control" name="cantProductoOrd" [(ngModel)]="cantProducto" required
+                    min="1">
+            </div>
+            <div class="col-1 mt-3 pt-3">
+                <button type="button" class="btn btn-outline-primary" (click)="crearOrdenDetalle()">Agregar</button>
+            </div>
+            <div class="row justify-content-center ">
+                <div class="col-8">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SKU Producto</th>
+                                <th>Nombre Producto</th>
+                                <th>Cantidad</th>
+                                <th>Monto Detalle</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let od of ordenDetalleDTO">
+                                <td>{{ od.codSKU }}</td>
+                                <td>{{ od.nombreProducto }}</td>
+                                <td>{{ od.cantOrdenDetalle }}</td>
+                                <td>ARS {{ od.montoDetalle }}</td>
+                                <td class="text-center "><button class="btn btn-danger"
+                                        (click)="eliminarDetalle(od.idProducto)"><i class="bi bi-x-circle"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td><strong>Total:</strong> ARS {{ calcularSubtotal().toFixed(2) }}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div *ngIf="estadoFormAlta" class="col-11 text-center mt-4 ">
+                <button type="submit" class="btn btn-success">Crear Orden de Compra</button>
+            </div>
+            <div *ngIf="estadoFormModificar" class="col-11 text-center mt-4 ">
+                <button type="submit" class="btn btn-warning ">Modificar Orden de Compra</button>
+            </div>
+        </div>
+    </form>
+</div>

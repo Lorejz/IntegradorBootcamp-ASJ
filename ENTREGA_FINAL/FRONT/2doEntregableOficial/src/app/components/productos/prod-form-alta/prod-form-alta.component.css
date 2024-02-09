@@ -1,0 +1,5 @@
+img {
+    max-width: 100px; /* Ajusta el ancho máximo según tus necesidades */
+    max-height: 100px; /* Ajusta la altura máxima según tus necesidades */
+    margin-top: 10px; /* Espaciado superior */
+}
